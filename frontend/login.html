@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f8f8f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      text-align: left;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+        input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+
+    input[type="submit"] {
+      background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 14px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <script src="./login.js?8"> </script>
+  <div class="form-container" id="form">
+    <h1>Put your login and password</h1>
+    <form>
+      <label for="login">Login:</label>
+      <input type="text" id="login" placeholder="Your login">
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Your password">
+      
+      <div class='error' id='error' style='display: none'>
+	<h2 style='color: red'>Try again!</h2>
+      </div>
+
+      <button type="button" id="button">Enter</button>
+    </form>
+  </div>
+
+    <div class="container" id="cont" style='display: none'>
+        <h1>Привет!</h1>
+    </div>
+
+
+</body>
+</html>
