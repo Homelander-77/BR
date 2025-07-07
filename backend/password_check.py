@@ -6,12 +6,12 @@ import re
 # 1. 8 chars
 # 2. small and big letters, special symbols
 # 3. easy information or phrases in password
-
-pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'
-path = './common_passwords.txt'
+# 4. Validation for use as password in other fields
 
 
-def len_symbols(password: str):
+def validate_by_len_symbols(password: str):
+    pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*#?&/])[A-Za-z\d@$!%*#?&./]{8,}$'
+
     if re.fullmatch(pattern, password):
         return True, True
     elif len(password) >= 8:
@@ -20,9 +20,34 @@ def len_symbols(password: str):
 
 
 def validate_by_common_list(password: str):
-    with open(path) as f:
+    path = 'common_passwords.txt'
+    max_similatiry = 0.7
+
+    with open('./' + path, 'r') as f:
         for line in dropwhile(lambda x: x.startswith('#'), f):
             common = line.strip().split(':')[-1]
-            if common >= 8 and password.lower() == common:
+            diff = SequenceMatcher(a=password.lower(), b=common)
+            if len(common) >= 8 and diff.ratio() >= max_similatiry:
                 return False
         return True
+
+
+def validate_by_similarity(mail: str, password: str):
+    max_similatiry = 0.6
+    fields = re.split(r'\W+', mail) + [mail]
+    for part in fields:
+        diff = SequenceMatcher(a=password.lower(), b=part.lower())
+        if diff.ratio() >= max_similatiry:
+            return False
+    return True
+
+
+def check(mail: str, password: str):
+    length, symbols = validate_by_len_symbols(password)
+    common = validate_by_common_list(password)
+    sim = validate_by_similarity(mail, password)
+
+    return {"length": length, "symbols": symbols, "common": common, "sim": sim}
+
+a = check('eeggorr120207@gmail.com', 'Raketator777/')
+print(a)
