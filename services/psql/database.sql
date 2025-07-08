@@ -2,7 +2,10 @@
 create table users (id serial primary key, firstname varchar(32) not null, lastname varchar(32) not null);
 
 -- Creating table with login and password
-create table login_password(id serial, login varchar(64) not null unique, password varchar(64) not null, foreign key (id) references users (id));
+create table login_password(user_id integer primary key, login varchar(64) not null unique, password varchar(64) not null, foreign key (user_id) references users (id) on delete cascade);
+
+-- Creating table with salt
+create table salt(user_id integer primary key, salt varchar(64) not null, foreign key (user_id) references login_password (user_id) on delete cascade);
 
 create or replace function check_authentication(in_login varchar(64), in_password varchar(64))
 returns boolean
@@ -26,7 +29,6 @@ exception
 end
 $$ language plpgsql;
 
--- add user
 create or replace function add_user(
     in_firstname varchar(64),
     in_lastname varchar(64),
