@@ -84,7 +84,7 @@ if __name__ == "__main__":
     try:
         server.add_path('/login', login)
         server.add_path('/reg', reg)
-        server.add_path('analysis', analysis)
+        server.add_path('/analysis', analysis)
         server.start()
     except KeyboardInterrupt:
         sys.exit(0)

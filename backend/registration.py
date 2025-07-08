@@ -1,5 +1,5 @@
-from password_check import check
 import json
+from password_check import check
 
 
 def analysis(request, *args, **kwargs):
