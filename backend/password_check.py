@@ -42,12 +42,9 @@ def validate_by_similarity(firstname: str, lastname: str, mail: str, password: s
     return True
 
 
-def check(mail: str, password: str):
+def check(firstname: str, lastname: str, mail: str, password: str):
     length, symbols = validate_by_len_symbols(password)
     common = validate_by_common_list(password)
-    sim = validate_by_similarity(mail, password)
+    sim = validate_by_similarity(firstname, lastname, mail, password)
 
     return {"length": length, "symbols": symbols, "common": common, "sim": sim}
-
-a = check('eeggorr120207@gmail.com', 'Raketator777/')
-print(a)

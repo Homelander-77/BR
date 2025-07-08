@@ -6,7 +6,7 @@ from parser import HTTPRequest
 from response import MakeHTTPResponse
 from psql import Database
 from login import login
-from registration import reg
+from registration import reg, analysis
 
 
 class Server:
@@ -24,6 +24,7 @@ class Server:
         print(f"Listening on {self.server_addr}")
         self.psql = Database()
         self.psql.start()
+        print(self.psql.select())
 
         while True:
             read_sockets, _, _ = select.select(self.sockets_list, [], [])
@@ -83,6 +84,7 @@ if __name__ == "__main__":
     try:
         server.add_path('/login', login)
         server.add_path('/reg', reg)
+        server.add_path('analysis', analysis)
         server.start()
     except KeyboardInterrupt:
         sys.exit(0)

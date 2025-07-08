@@ -30,3 +30,5 @@ class Database:
         ans = self.cur.fetchone()
         self.conn.commit()
         return ans[0]
+
+
