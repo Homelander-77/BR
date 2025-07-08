@@ -32,9 +32,9 @@ def validate_by_common_list(password: str):
         return True
 
 
-def validate_by_similarity(mail: str, password: str):
+def validate_by_similarity(firstname: str, lastname: str, mail: str, password: str):
     max_similatiry = 0.6
-    fields = re.split(r'\W+', mail) + [mail]
+    fields = re.split(r'\W+', mail) + [firstname, lastname, mail]
     for part in fields:
         diff = SequenceMatcher(a=password.lower(), b=part.lower())
         if diff.ratio() >= max_similatiry:

@@ -1,6 +1,6 @@
 import psycopg2
-
 import psql_config
+
 
 class Database:
     def __init__(self):
