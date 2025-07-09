@@ -21,10 +21,15 @@ class Database:
         self.conn.close()
 
     def get_password_by_login(self, login):
-        self.cur.execute(f'select password from login_password where login={login}')
+        self.cur.callproc("get_password_by_login", (login))
         ans = self.cur.fetchone()
         return ans[0]
     
+    def get_salt_by_login(self, login):
+        self.cur.callproc("get_salt_by_login", (login))
+        ans = self.cur.fetchone()
+        return ans[0]
+
     def add_user(self, firstname, lastname, login, password):
         self.cur.callproc("add_user", (firstname, lastname, login, password))
         ans = self.cur.fetchone()

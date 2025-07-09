@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            padding: 30px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            border-color: #764ba2;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.2);
+        }
+        
+        button {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: linear-gradient(to right, #5a6fd1, #6a4299);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .password-check {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #764ba2;
+        }
+        
+        .password-check h3 {
+            margin-top: 0;
+            color: #4a4a4a;
+            font-size: 16px;
+        }
+        
+        .password-check ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        
+        .password-check li {
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+        }
+        
+        .requirement i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        
+        .valid {
+            color: #28a745;
+        }
+        
+        .invalid {
+            color: #dc3545;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Создать аккаунт</h1>
+        
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="firstName">Имя</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="lastName">Фамилия</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email (логин)</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        
+        <div class="password-check" id="passwordCheck">
+            <h3>Требования к паролю:</h3>
+            <ul>
+                <li class="requirement">
+                    <i id="lengthIcon" class="invalid">✗</i>
+                    <span id="lengthText">Не менее 8 символов</span>
+                </li>
+                <li class="requirement">
+                    <i id="caseIcon" class="invalid">✗</i>
+                    <span id="caseText">Содержит заглавные и строчные буквы, а также специальные символы</span>
+                </li>
+                <li class="requirement">
+                    <i id="commonIcon" class="invalid">✗</i>
+                    <span id="commonText">Не легкое слово или фраза</span>
+                </li>
+                <li class="requirement">
+                    <i id="simIcon" class="invalid">✗</i>
+                    <span id="simText">Не совпадает информация с другими строками</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+<script src="./reg.js?1"></script>
+</body>
+</html>

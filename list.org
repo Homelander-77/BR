@@ -16,4 +16,5 @@ bladerunner -*- mode: org -*-
 * Frontend
 ** Registration html
 ** JS for reg
+** reg.js codes browser improve
 
