@@ -2,9 +2,12 @@ bladerunner -*- mode: org -*-
 
 * Postgres
 ** DONE Password psql is 11092001
-** Remove container postgres, move it on localhost -p 5432:5432
-** Make 2 tables, first for passwords, second for salt
-** Rewrite functions plpgsql
+** DONE Remove container postgres, move it on localhost -p 5432:5432
+** TODO Make 2 tables, first for passwords, second for salt
+** TODO Rewrite functions plpgsql
+** TODO Delete chech_auth function
+** TODO Move sql code to sql functions
+
 
 * Server
 ** Salt password for psql, create new file for this action

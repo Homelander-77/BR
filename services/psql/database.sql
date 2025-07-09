@@ -7,33 +7,12 @@ create table login_password(user_id integer primary key, login varchar(64) not n
 -- Creating table with salt
 create table salt(user_id integer primary key, salt varchar(64) not null, foreign key (user_id) references login_password (user_id) on delete cascade);
 
-create or replace function check_authentication(in_login varchar(64), in_password varchar(64))
-returns boolean
-as $$
-declare
-	dlogin varchar(64);
-	dpassword varchar(64);
-begin
-	select lp.login, lp.password into strict dlogin, dpassword from login_password as lp where lp.login = in_login and lp.password=in_password;
-	RAISE NOTICE '%, %', dlogin, dpassword; 
-	if in_login = dlogin and in_password = dpassword then 
-		return true;
-	else
-		return false;
-	end if;
-exception
-	when no_data_found then
-		return false;
-	when too_many_rows then
-		return false;
-end
-$$ language plpgsql;
-
 create or replace function add_user(
     in_firstname varchar(64),
     in_lastname varchar(64),
     in_login varchar(64),
-    in_password varchar(64)
+    in_password varchar(64),
+    in_salt varchar(64)
 )
 returns boolean
 as $$
@@ -47,6 +26,9 @@ begin
 
         INSERT INTO login_password (user_id, login, password)
         VALUES (user_id, in_login, in_password);
+			
+		INSERT INTO salt (user_id, salt)
+        VALUES (user_id, in_salt);
 
         COMMIT;
         return TRUE; 
@@ -56,5 +38,33 @@ begin
         raise notice 'Error: %', SQLERRM;
         return FALSE; 
     end;
+end;
+$$ language plpgsql;
+
+create or replace function get_password_by_login(in_login varchar(64))
+returns varchar(64)
+as $$
+declare
+	password varchar(64);
+begin
+	select lp.password into password from login_password lp 
+	where lp.login=in_login;
+	
+	return password;
+end;
+$$ language plpgsql;
+
+
+create or replace function get_salt_by_login(in_login varchar(64))
+returns varchar(64)
+as $$
+declare
+	salt varchar(64);
+begin
+	select s.salt into salt from login_password lp 
+	left join salt s on lp.id=s.user_id
+	where lp.login=in_login;
+	
+	return salt;
 end;
 $$ language plpgsql;
