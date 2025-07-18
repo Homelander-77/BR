@@ -170,20 +170,100 @@
                 </li>
                 <li class="requirement">
                     <i id="caseIcon" class="invalid">✗</i>
-                    <span id="caseText">Содержит заглавные и строчные буквы, а также специальные символы</span>
+                    <span id="caseText">Содержит заглавные и строчные буквы</span>
                 </li>
-                <li class="requirement" id="sim">
-                    <i id="simIcon" class="invalid">✗</i>
-                    <span id="simText">Не совпадает информация с другими строками</span>
+                <li class="requirement">
+                    <i id="symbolIcon" class="invalid">✗</i>
+                    <span id="symbolText">Содержит специальные символы (!@#$%^&*)</span>
                 </li>
-		<li class="hidden" id='common'>
-                    <i id="commonIcon" class="invalid">✗</i>
-                    <span id="commonText">Не легкое слово или фраза</span>
+                <li class="requirement">
+                    <i id="infoIcon" class="invalid">✗</i>
+                    <span id="infoText">Не содержит личную информацию</span>
                 </li>
-
             </ul>
         </div>
     </div>
-<script src="./reg.js?1"></script>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const passwordCheck = document.getElementById('passwordCheck');
+        
+        // Иконки и тексты требований
+        const lengthIcon = document.getElementById('lengthIcon');
+        const lengthText = document.getElementById('lengthText');
+        const caseIcon = document.getElementById('caseIcon');
+        const caseText = document.getElementById('caseText');
+        const symbolIcon = document.getElementById('symbolIcon');
+        const symbolText = document.getElementById('symbolText');
+        const infoIcon = document.getElementById('infoIcon');
+        const infoText = document.getElementById('infoText');
+        
+        // Элементы формы для проверки личной информации
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const emailInput = document.getElementById('email');
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            
+            // Проверка длины пароля
+            if (password.length >= 8) {
+                lengthIcon.textContent = '✓';
+                lengthIcon.className = 'valid';
+            } else {
+                lengthIcon.textContent = '✗';
+                lengthIcon.className = 'invalid';
+            }
+            
+            // Проверка на наличие заглавных и строчных букв
+            if (/[A-Z]/.test(password) && /[a-z]/.test(password)) {
+                caseIcon.textContent = '✓';
+                caseIcon.className = 'valid';
+            } else {
+                caseIcon.textContent = '✗';
+                caseIcon.className = 'invalid';
+            }
+            
+            // Проверка на специальные символы
+            if (/[!@#$%^&*]/.test(password)) {
+                symbolIcon.textContent = '✓';
+                symbolIcon.className = 'valid';
+            } else {
+                symbolIcon.textContent = '✗';
+                symbolIcon.className = 'invalid';
+            }
+            
+            // Проверка на личную информацию
+            const firstName = firstNameInput.value.toLowerCase();
+            const lastName = lastNameInput.value.toLowerCase();
+            const email = emailInput.value.toLowerCase();
+            const emailUser = email.split('@')[0];
+            
+            const personalInfo = [firstName, lastName, emailUser].filter(Boolean);
+            let containsPersonalInfo = false;
+            
+            if (personalInfo.length > 0) {
+                containsPersonalInfo = personalInfo.some(info => 
+                    info && password.toLowerCase().includes(info)
+                );
+            }
+            
+            if (!containsPersonalInfo && password.length > 0) {
+                infoIcon.textContent = '✓';
+                infoIcon.className = 'valid';
+            } else {
+                infoIcon.textContent = '✗';
+                infoIcon.className = 'invalid';
+            }
+        });
+        
+        // Обработка отправки формы
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Здесь можно добавить дополнительную проверку перед отправкой
+            alert('Форма успешно отправлена!');
+        });
+    </script>
 </body>
 </html>
