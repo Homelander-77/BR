@@ -78,7 +78,7 @@ function coincidence(password, firstName, lastName, email){
 }
 
 function editConditions(){
-    let [password, firstName, lastName, email] = getData();
+    const [password, firstName, lastName, email] = getData();
     
     if (len(password)) {
 	lengthIcon.textContent = '✓';
@@ -109,29 +109,30 @@ function checkPassword() {
     editConditions();
 }
 
-// function edit_common() {
-    
-// }
+function edit_common() {
+    commonIcon.style = 'none';    
+}
 
-// function reg() {
-//     if ()
-//         fetch('/api/reg', {
-// 	method: 'POST',
-// 	headers: {
-// 	    'Content-Type': 'application/json'
-// 	},
-// 	body: JSON.stringify({firstname: firstNameInput.value,
-// 			      lastname: lastNameInput.value,
-// 			      login: emailInput.value, 
-// 			      password: passwordInput.value})
-//     })
-//     .then(res => {
-// 	res = res.json();
-// 	if res.status == {
-// 	    // redirect
-// 	} else {
-// 	    // red error
-// 	}
-//     });
-
-// }
+function reg() {    
+    const [password, firstName, lastName, email] = getData();
+    if (len(password) && specialSymbolsDigestsLetters(password) && coincidence(password, firstName, lastName, email)){
+        fetch('/api/reg', {
+	method: 'POST',
+	headers: {
+	    'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({firstname: firstName,
+			      lastname: lastName,
+			      login: email, 
+			      password: password})
+    })
+	    .then(res => {
+		if (res.status == 400) {
+		    edit_common();
+		    alert("Bad Request: Please check your input and try again.");
+		} else if (res.status == 200) {
+		    window.location.href = '/hello';
+		}
+	    });
+    }
+}
