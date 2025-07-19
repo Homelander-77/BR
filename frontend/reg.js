@@ -1,5 +1,7 @@
-passwordInput.addEventListener('input', checkPassword)
-document.getElementById('registrationForm').addEventListener('submit', reg);
+// document.getElementById('registrationForm').addEventListener('submit', reg);
+
+const passwordInput = document.getElementById('password');
+passwordInput.addEventListener('input', checkPassword);
 
 const lengthIcon = document.getElementById('lengthIcon');
 const caseIcon = document.getElementById('caseIcon');
@@ -8,15 +10,24 @@ const commonIcon = document.getElementById('commonIcon');
 
 const commonPoint = document.getElementById('common');
 
-const firstNameInput = document.getElementById('firstName');
-const lastNameInput = document.getElementById('lastName');
-const emailInput = document.getElementById('email');
+function getData(){
+    const passwordInput =  document.getElementById('password').value;
+    const firstNameInput = document.getElementById('firstName').value;
+    const lastNameInput = document.getElementById('lastName').value;
+    const emailInput = document.getElementById('email').value;
 
+    const password = (typeof passwordInput === 'string') ? passwordInput : '';
+    const firstName = (typeof firstNameInput === 'string') ? firstNameInput : '';
+    const lastName = (typeof lastNameInput === 'string') ? lastNameInput : '';
+    const email = (typeof emailInput === 'string') ? emailInput : '';
+
+    return [password, firstName, lastName, email];
+}
 
 function levenshtein(a, b) {
-  const matrix = Array(a.length + 1).fill(null).map(() =>
-    Array(b.length + 1).fill(null)
-  );
+    const matrix = Array(a.length + 1).fill(null).map(() =>
+	Array(b.length + 1).fill(null)
+    );
   for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
   for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
   for (let i = 1; i <= a.length; i++) {
@@ -27,28 +38,49 @@ function levenshtein(a, b) {
         matrix[i][j - 1] + 1,
         matrix[i - 1][j - 1] + cost
       );
+    };
+  };
+    return matrix[a.length][b.length];
+}
+
+function similarity(password, firstName, lastName, email) {    
+    let personalData = [firstName, lastName, email];
+    let coefs = personalData.map((data) => {
+	let pwd = (typeof password === 'string') ? password : ''; // additionaly check
+	let datum = (typeof data === 'string') ? data : ''; // additionaly check
+	const distance = levenshtein(pwd.toLowerCase(), datum.toLowerCase());
+	const maxLen = Math.max(pwd.length, datum.length);
+	return 1 - distance / maxLen;
+    });
+    return Math.max(...coefs);
+}
+
+function len(password) {
+    return password.length >= 8;
+}
+
+function specialSymbolsDigestsLetters(password) { 
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*#?&\/])[A-Za-z\d@$!%*#?&.\/]{8,}$/;
+    return regex.test(password);
+} 
+
+function coincidence(password, firstName, lastName, email){
+    if (password.length > 0 && firstName.length > 0 && lastName.length > 0 && email.length > 0){
+	const sim = similarity(password, firstName, lastName, email);
+	if (sim < 0.35){
+	    return true;
+	} else {
+	    return false;
+	}
+    } else {
+	return false;
     }
-  }
-  return matrix[a.length][b.length];
 }
 
-function similarity(password, firstName, lastName, email) {
-    const personalData = [firstName, lastName, email]
-    let coefs = []; 
-    for (let i=0; i < 3, i++) {
-	const distance = levenshtein(password.toLowerCase(), personalData[i].toLowerCase());
-	const maxLen = Math.max(a.length, b.length);
-	coefs.push(1 - distance / maxLen);    
-  }
-  
-  return Math.max(coefs);
-}
-
-function edit_conditions(password){
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*#?&/])[A-Za-z\d@$!%*#?&./]{8,}$/
-    const arr = []
-
-    if (password.length >= 8) {
+function editConditions(){
+    let [password, firstName, lastName, email] = getData();
+    
+    if (len(password)) {
 	lengthIcon.textContent = '✓';
         lengthIcon.className = 'valid';
     } else {
@@ -56,7 +88,7 @@ function edit_conditions(password){
         lengthIcon.className = 'invalid';
     }
     
-    if (regex.text(password)) {
+    if (specialSymbolsDigestsLetters(password)) {
 	caseIcon.textContent = '✓';
         caseIcon.className = 'valid';
     } else {
@@ -64,46 +96,42 @@ function edit_conditions(password){
         caseIcon.className = 'invalid';
     }
     
-    if (if similarity < 0.65) {
+    if (coincidence(password, firstName, lastName, email)){
 	simIcon.textContent = '✓';
         simIcon.className = 'valid';
     } else {
 	simIcon.textContent = '✗';
         simIcon.className = 'invalid';
     }
-
-}
-
-function edit_common(json) {
-    
-    
 }
 
 function checkPassword() {
-    const password = this.value;
-
-    edit_conditions(password);
-
-
-function reg() {
-        fetch('/api/reg', {
-	method: 'POST',
-	headers: {
-	    'Content-Type': 'application/json'
-	},
-	body: JSON.stringify({firstname: firstNameInput.value,
-			      lastname: lastNameInput.value,
-			      login: emailInput.value, 
-			      password: passwordInput.value})
-    })
-    .then(res => {
-	res = res.json();
-	if res.status == {
-	    // redirect
-	} else {
-	    // red error
-	}
-
-    })
-
+    editConditions();
 }
+
+// function edit_common() {
+    
+// }
+
+// function reg() {
+//     if ()
+//         fetch('/api/reg', {
+// 	method: 'POST',
+// 	headers: {
+// 	    'Content-Type': 'application/json'
+// 	},
+// 	body: JSON.stringify({firstname: firstNameInput.value,
+// 			      lastname: lastNameInput.value,
+// 			      login: emailInput.value, 
+// 			      password: passwordInput.value})
+//     })
+//     .then(res => {
+// 	res = res.json();
+// 	if res.status == {
+// 	    // redirect
+// 	} else {
+// 	    // red error
+// 	}
+//     });
+
+// }
