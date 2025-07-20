@@ -24,7 +24,6 @@ class Server:
         print(f"Listening on {self.server_addr}")
         self.psql = Database()
         self.psql.start()
-        print(self.psql.select())
 
         while True:
             read_sockets, _, _ = select.select(self.sockets_list, [], [])

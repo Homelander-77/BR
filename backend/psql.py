@@ -30,8 +30,8 @@ class Database:
         ans = self.cur.fetchone()
         return ans[0]
 
-    def add_user(self, firstname, lastname, login, password):
-        self.cur.callproc("add_user", (firstname, lastname, login, password))
+    def add_user(self, firstname, lastname, login, password, salt):
+        self.cur.callproc("add_user", (firstname, lastname, login, password, salt))
         ans = self.cur.fetchone()
         self.conn.commit()
         return ans[0]

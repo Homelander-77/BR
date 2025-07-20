@@ -8,9 +8,9 @@ def generate_salt():
 
 
 def salt_password(password: str, salt):
-    salted_password = password.encode('utf-8') + salt
+    salted_password = (password + salt).encode('utf-8')
     hash_object = hashlib.sha256(salted_password)
-    hashed_password = hash_object.hexdigest(hash_object)
+    hashed_password = hash_object.hexdigest()
     return hashed_password
 
 
