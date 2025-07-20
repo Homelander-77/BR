@@ -10,6 +10,7 @@ def reg(request, psql):
     if sum(ans.values()) == 4:
         salt = generate_salt()
         password = salt_password(password, salt)
+        print(firstname, lastname, mail, password, salt)
         psql.add_user(firstname, lastname, mail, password, salt)
         return json.dumps(ans), 200
     return json.dumps(ans), 400
