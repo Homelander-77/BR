@@ -1,4 +1,4 @@
-// document.getElementById('registrationForm').addEventListener('submit', reg);
+document.getElementById('registrationForm').addEventListener('submit', reg);
 
 const passwordInput = document.getElementById('password');
 passwordInput.addEventListener('input', checkPassword);

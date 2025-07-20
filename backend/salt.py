@@ -2,6 +2,7 @@ import hashlib
 import os
 import binascii
 
+
 def generate_salt():
     return binascii.hexlify(os.urandom(16)).decode('utf-8')
 

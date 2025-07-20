@@ -61,6 +61,6 @@ def validate_by_common_combination(password):
 def check(firstname: str, lastname: str, mail: str, password: str):
     length, symbols = validate_by_len_symbols(password)
     sim = validate_by_similarity(firstname, lastname, mail, password)
-    common = validate_by_common_list(password)
+    common = validate_by_common_combination(password)
 
     return {"length": length, "symbols": symbols, "sim": sim, "common": common}

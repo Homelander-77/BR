@@ -6,7 +6,7 @@ from parser import HTTPRequest
 from response import MakeHTTPResponse
 from psql import Database
 from login import login
-from registration import reg, analysis
+from registration import reg
 
 
 class Server:
@@ -58,8 +58,8 @@ class Server:
         if message:
             request = HTTPRequest(message.decode())
             if request.path in self.paths.keys():
-                json = self.paths[request.path](request, self.psql)
-                makeResponse = MakeHTTPResponse(200, json)
+                json, code = self.paths[request.path](request, self.psql)
+                makeResponse = MakeHTTPResponse(code, json)
             else:
                 makeResponse = MakeHTTPResponse(404, '')
 
@@ -84,7 +84,6 @@ if __name__ == "__main__":
     try:
         server.add_path('/login', login)
         server.add_path('/reg', reg)
-        server.add_path('/analysis', analysis)
         server.start()
     except KeyboardInterrupt:
         sys.exit(0)

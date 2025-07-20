@@ -7,6 +7,7 @@ bladerunner -*- mode: org -*-
 ** TODO Rewrite functions plpgsql
 ** TODO Delete chech_auth function
 ** TODO Move sql code to sql functions
+** TODO Rewrite functions with codes
 
 
 * Server

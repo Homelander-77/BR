@@ -1,1 +1,3 @@
+cracklib==2.9.6
+psycopg2==2.9.10
 psycopg2_binary==2.9.10

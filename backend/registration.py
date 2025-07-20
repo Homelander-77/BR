@@ -3,14 +3,13 @@ from password_check import check
 from salt import salt_password, generate_salt
 
 
-# For registration
 def reg(request, psql):
     firstname, lastname = request.body["firstname"], request.body["lastname"]
-    salt = generate_salt()
-    mail, password = request.body["login"], \
-        salt_password(request.body["password"], salt)
+    mail, password = request.body["login"], request.body["password"]
     ans = check(firstname, lastname, mail, password)
     if sum(ans.values()) == 4:
+        salt = generate_salt()
+        password = salt_password(password, salt)
         psql.add_user(firstname, lastname, mail, password, salt)
-        return json.dumps(ans)
-    return json.dumps(ans)
+        return json.dumps(ans), 200
+    return json.dumps(ans), 400

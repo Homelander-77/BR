@@ -11,6 +11,7 @@ RUN apk update && apk add --no-cache gcc musl-dev python3-dev libpq-dev
 
 COPY ./librs/psycopg2-2.9.10.tar.gz /tmp/
 RUN pip install --no-cache-dir /tmp/psycopg2-2.9.10.tar.gz
+RUN pip install --no-cache-dir cracklib==2.9.6
 
 ENV PSQL_PASSWORD=your_password
 
