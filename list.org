@@ -5,9 +5,10 @@ bladerunner -*- mode: org -*-
 ** DONE Remove container postgres, move it on localhost -p 5432:5432
 ** TODO Make 2 tables, first for passwords, second for salt
 ** TODO Rewrite functions plpgsql
-** TODO Delete chech_auth function
+** DONE  Delete chech_auth function
 ** TODO Move sql code to sql functions
 ** TODO Rewrite functions with codes
+** TODO varchar(64) -> 128
 
 
 * Server

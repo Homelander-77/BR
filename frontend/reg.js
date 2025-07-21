@@ -1,4 +1,7 @@
-document.getElementById('registrationForm').addEventListener('submit', reg);
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    reg();
+});
 
 const passwordInput = document.getElementById('password');
 passwordInput.addEventListener('input', checkPassword);
@@ -127,12 +130,23 @@ function reg() {
 			      password: password})
     })
 	    .then(res => {
-		if (res.status == 400) {
+		console.log(res.status);
+		if (res.status === 400) {
 		    edit_common();
 		    alert("Bad Request: Please check your input and try again.");
-		} else if (res.status == 200) {
-		    window.location.href = '/hello';
+		} else if (res.status === 200) {
+		    return res.json();
+		} else {
+		    alert("Unexpected server response.");
+                    throw new Error('Unexpected status: ' + res.status);
 		}
+	    })
+	.then(data => {
+	    window.location.href = '/';
+	})
+	    .catch(error => {
+		console.error('Fetch error:', error);
+		alert("Network error or bad response");
 	    });
     }
 }

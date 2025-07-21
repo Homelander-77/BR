@@ -2,17 +2,17 @@
 create table users (id serial primary key, firstname varchar(32) not null, lastname varchar(32) not null);
 
 -- Creating table with login and password
-create table login_password(user_id integer primary key, login varchar(64) not null unique, password varchar(64) not null, foreign key (user_id) references users (id) on delete cascade);
+create table login_password(user_id integer primary key, login varchar(64) not null unique, password varchar(96) not null, foreign key (user_id) references users (id) on delete cascade);
 
 -- Creating table with salt
-create table salt(user_id integer primary key, salt varchar(64) not null, foreign key (user_id) references login_password (user_id) on delete cascade);
+create table salt(user_id integer primary key, salt varchar(32) not null, foreign key (user_id) references login_password (user_id) on delete cascade);
 
 create or replace function add_user(
     in_firstname varchar(64),
     in_lastname varchar(64),
     in_login varchar(64),
-    in_password varchar(64),
-    in_salt varchar(64)
+    in_password varchar(96),
+    in_salt varchar(32)
 )
 returns boolean
 as $$
@@ -30,11 +30,9 @@ begin
 		INSERT INTO salt (user_id, salt)
         VALUES (user_id, in_salt);
 
-        COMMIT;
         return TRUE; 
 
     exception when others then
-        ROLLBACK;
         raise notice 'Error: %', SQLERRM;
         return FALSE; 
     end;

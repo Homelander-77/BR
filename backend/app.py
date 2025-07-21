@@ -57,12 +57,11 @@ class Server:
         if message:
             request = HTTPRequest(message.decode())
             if request.path in self.paths.keys():
-                json, code = self.paths[request.path](request, self.psql)
-                makeResponse = MakeHTTPResponse(code, json)
+                response = self.paths[request.path](request, self.psql)
             else:
                 makeResponse = MakeHTTPResponse(404, '')
+                response = makeResponse.make(cookie=False)
 
-            response = makeResponse.make()
             print(response.decode())
             while response:
                 sent = conn.send(response)
