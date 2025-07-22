@@ -12,7 +12,7 @@ def reg(request, psql):
         salt = generate_salt()
         password = salt_password(password, salt)
         psql.add_user(firstname, lastname, mail, password, salt)
-        res = MakeHTTPResponse(200, json.dumps(ans)).make(cookie=True)
-        return res
-    res = MakeHTTPResponse(400, json.dumps(ans)).make(cookie=False)
-    return res
+        response = MakeHTTPResponse(200, json.dumps(ans)).make(cookie=True)
+        return response
+    response = MakeHTTPResponse(400, json.dumps(ans)).make(cookie=False)
+    return response
