@@ -2,6 +2,7 @@ import json
 from password_check import check
 from salt import salt_password, generate_salt
 from response import MakeHTTPResponse
+from cookie import cookie_create
 
 
 def reg(request, psql):
@@ -11,8 +12,9 @@ def reg(request, psql):
     if sum(ans.values()) == 4:
         salt = generate_salt()
         password = salt_password(password, salt)
-        psql.add_user(firstname, lastname, mail, password, salt)
-        response = MakeHTTPResponse(200, json.dumps(ans)).make(cookie=True)
+        cookie = cookie_create()
+        psql.add_user(firstname, lastname, mail, password, salt, cookie)
+        response = MakeHTTPResponse(200, json.dumps(ans)).make(cookie=cookie)
         return response
-    response = MakeHTTPResponse(400, json.dumps(ans)).make(cookie=False)
+    response = MakeHTTPResponse(400, json.dumps(ans)).make(cookie={})
     return response

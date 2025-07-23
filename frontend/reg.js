@@ -141,9 +141,6 @@ function reg() {
                     throw new Error('Unexpected status: ' + res.status);
 		}
 	    })
-	.then(data => {
-	    window.location.href = '/';
-	})
 	    .catch(error => {
 		console.error('Fetch error:', error);
 		alert("Network error or bad response");

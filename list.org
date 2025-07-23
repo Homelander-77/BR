@@ -12,11 +12,16 @@ bladerunner -*- mode: org -*-
 
 
 * Server
-** Salt password for psql, create new file for this action
-** Take password for psql from os
+** DONE Salt password for psql, create new file for this action
+** DONE Take password for psql from os
+** TODO Checking cookie
+** TODO Finish writing cookie.py
 
 * Frontend
-** Registration html
-** JS for reg
-** reg.js codes browser improve
+** DONE Registration html
+** DONE JS for reg
+** DONE reg.js codes browser im
+** 
 
+* bladerunner
+** Optimize docker, too many downloads, cash

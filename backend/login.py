@@ -1,13 +1,16 @@
 import json
 from response import MakeHTTPResponse
+from cookie import cookie_create
+from salt import verify_password
 
 
 def login(request, database):
-    print(request.body)
-    if len(request.body) > 0 and database.check_auth(request.body["login"], \
-                                                     request.body["password"]):
-        ans = json.dumps({"success": True}), 200
-        response = MakeHTTPResponse(200, ans).make(cookie=True)
+    in_login, in_password = request.body["login"], request.body["password"]
+    if verify_password(in_login, in_password, database):
+        ans = json.dumps({"success": True})
+        cookie = cookie_create()
+        response = MakeHTTPResponse(200, ans).make(cookie=cookie)
+        database.add_cookie(in_login, cookie)
         print('{"success": true}')
         return response
     else:

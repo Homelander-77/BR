@@ -1,7 +1,3 @@
-import uuid
-from datetime import datetime, timedelta
-
-
 class MakeHTTPResponse:
     def __init__(self, status, json):
         self.status = int(status)
@@ -15,14 +11,12 @@ class MakeHTTPResponse:
         self.length = str(len(json))
         self.contentLength = f'Content-Length: {self.length}'
 
-    def make(self, cookie: bool):
+    def make(self, cookie):
         header = f'{self.httpVersion} {self.status} {self.statusResponse[self.status]}'
         addInfo = f'{self.content_type}; {self.charset}'
         response = f'{header}\r\n{addInfo}\r\n{self.contentLength}\r\n\r\n{self.json}'
         if cookie:
-            cookie_id = str(uuid.uuid64())
-            expires = (datetime.utcnow() + timedelta(days=7)).strftime("%a, %d %b %Y %H:%M:%S GMT")
-            cookie_header = f"Set-Cookie: id={cookie_id}; Expires={expires}; Path=/; HttpOnly"
+            cookie_header = f"Set-Cookie: id={cookie['id']}; Expires={cookie['expire']}; Path=/; HttpOnly"
             response = f'{header}\r\n{addInfo}\r\n{self.contentLength}\r\n{cookie_header}\r\n\r\n{self.json}'
 
         return response.encode()

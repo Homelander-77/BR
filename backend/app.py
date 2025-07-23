@@ -7,6 +7,7 @@ from response import MakeHTTPResponse
 from psql import Database
 from login import login
 from registration import reg
+from cookie import cookie_check
 
 
 class Server:
@@ -82,6 +83,7 @@ if __name__ == "__main__":
     try:
         server.add_path('/login', login)
         server.add_path('/reg', reg)
+        server.add_path('/cookie', cookie_check)
         server.start()
     except KeyboardInterrupt:
         sys.exit(0)

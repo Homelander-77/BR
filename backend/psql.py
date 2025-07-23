@@ -24,16 +24,21 @@ class Database:
         self.cur.callproc("get_password_by_login", (login))
         ans = self.cur.fetchone()
         return ans[0]
-    
+
     def get_salt_by_login(self, login):
         self.cur.callproc("get_salt_by_login", (login))
         ans = self.cur.fetchone()
         return ans[0]
 
-    def add_user(self, firstname, lastname, login, password, salt):
-        self.cur.callproc("add_user", (firstname, lastname, login, password, salt))
+    def add_user(self, firstname, lastname, login, password, salt, cookie):
+        self.cur.callproc("add_user", (firstname, lastname, login, password, \
+                                       salt, cookie['id'], cookie['expire']))
         ans = self.cur.fetchone()
         self.conn.commit()
         return ans[0]
 
-
+    def add_cookie(self, login, cookie):
+        self.cur.callproc("add_cookie", (login, cookie))
+        ans = self.cur.fetchone()
+        self.conn.commit()
+        return ans[0]
