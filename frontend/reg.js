@@ -135,7 +135,7 @@ function reg() {
 		    edit_common();
 		    alert("Bad Request: Please check your input and try again.");
 		} else if (res.status === 200) {
-		    return res.json();
+		    window.location.href = '/';
 		} else {
 		    alert("Unexpected server response.");
                     throw new Error('Unexpected status: ' + res.status);

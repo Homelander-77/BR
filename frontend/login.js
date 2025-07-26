@@ -1,8 +1,32 @@
+import { check } from "cookieCheck";
+
 window.addEventListener('load', function(){
+    let cookieValue = getCookie('id');
+    if (cookieValue){
+	ans = check();
+	if (ans) {
+	    window.location.href = '/';
+	    return;
+	} else {
+	    deleteCookie();
+	}
+    }
     document.getElementById('button').addEventListener('click', login);
 });
+
+function getCookie(name){
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return '';
+}
+
+function deleteCookie() {
+    document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
 function login() {
-    fetch('/api/login', {
+        fetch('/api/login', {
 	method: 'POST',
 	headers: {
         'Content-Type': 'application/json'
@@ -11,7 +35,7 @@ function login() {
 			     password: document.getElementById('password').value})
     })
 	.then(res => {
-	    console.log(res.status)
+	    console.log(res.status);
 	    if(res.status === 404){
 		return '404';
 	    } 
@@ -22,8 +46,7 @@ function login() {
 	    if (!json.success){
 		document.getElementById('error').style.display = 'block';
 	    } else {
-		document.getElementById('form').style.display = 'none';
-		document.getElementById('cont').style.display = 'block';
+		window.location.href = '/';
 	    }
-	})
+	});
 };

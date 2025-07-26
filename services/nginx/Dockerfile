@@ -1,6 +1,6 @@
 FROM nginx:1.26-alpine
 
-COPY frontend/404.html frontend/login.html frontend/index.html frontend/index.js frontend/login.js frontend/reg.js frontend/reg.html /usr/share/nginx
+COPY frontend/404.html frontend/login.html frontend/index.html frontend/index.js frontend/login.js frontend/reg.js frontend/reg.html frontend/cookieCheck.js /usr/share/nginx
 COPY services/nginx/nginx.conf /etc/nginx
 COPY services/nginx/cert/nginx-selfsigned.crt /etc/nginx/ssl/nginx-selfsigned.crt
 COPY services/nginx/cert/nginx-selfsigned.key /etc/nginx/ssl/nginx-selfsigned.key

@@ -11,7 +11,7 @@ class MakeHTTPResponse:
         self.length = str(len(json))
         self.contentLength = f'Content-Length: {self.length}'
 
-    def make(self, cookie):
+    def make(self, cookie=''):
         header = f'{self.httpVersion} {self.status} {self.statusResponse[self.status]}'
         addInfo = f'{self.content_type}; {self.charset}'
         response = f'{header}\r\n{addInfo}\r\n{self.contentLength}\r\n\r\n{self.json}'

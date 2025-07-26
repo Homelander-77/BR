@@ -6,7 +6,6 @@ create table users (id serial primary key, firstname varchar(32) not null, lastn
 drop table login_password cascade;
 create table login_password(user_id integer primary key, login varchar(64) not null unique, password varchar(96) not null, foreign key (user_id) references users (id) on delete cascade);
 
--- Creating table with salt
 drop table salt cascade;
 create table salt(user_id integer primary key, salt varchar(32) not null, foreign key (user_id) references login_password (user_id) on delete cascade);
 
@@ -67,6 +66,20 @@ begin
 	on conflict(user_id) do update 
 	set cookie=excluded.cookie;
 	return true;
+end;
+$$ language plpgsql;
+
+create or replace function get_cookie(in_cookie varchar(36))
+returns boolean
+as $$
+declare
+	expire integer;
+begin
+	select expire into expire from cookie where cookie = in_cookie;
+	if expire is null then
+		return '';
+	end if;
+	return expire;
 end;
 $$ language plpgsql;
 

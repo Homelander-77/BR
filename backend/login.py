@@ -15,6 +15,6 @@ def login(request, database):
         return response
     else:
         ans = json.dumps({"success": False})
-        response = MakeHTTPResponse(401, ans).make(cookie=False)
+        response = MakeHTTPResponse(401, ans).make()
         print('{"success": false}')
         return response
