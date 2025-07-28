@@ -10,7 +10,7 @@ export function check(){
 	} else if (res.status === 403){
 	    return false;
 	} else {
-	    alert(res.status);
+	    console.log(res.status);
 	}
     })
     .catch(e =>{
