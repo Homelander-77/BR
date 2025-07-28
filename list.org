@@ -30,3 +30,4 @@ bladerunner -*- mode: org -*-
 
 * bladerunner
 ** Optimize docker, too many downloads, cash
+** Make limitation of login, passworf and i.e.

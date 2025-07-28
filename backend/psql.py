@@ -38,7 +38,7 @@ class Database:
         return ans[0]
 
     def add_cookie(self, login, cookie):
-        self.cur.callproc("add_cookie", (login, cookie['id'], cookie['expire']))
+        self.cur.callproc("set_cookie", (login, cookie['id'], cookie['expire']))
         ans = self.cur.fetchone()
         self.conn.commit()
         return ans[0]
