@@ -1,4 +1,4 @@
-import { check } from "cookieCheck";
+import { check } from "./cookieCheck";
 
 window.addEventListener('load', function() {
     if (!check) {

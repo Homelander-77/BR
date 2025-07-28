@@ -1,4 +1,4 @@
-function check(){
+export function check(){
     fetch('/api/cookie', {
 	method: 'GET',
 	credentials: 'include',

@@ -1,9 +1,9 @@
-import { check } from "cookieCheck";
+import { check } from "./cookieCheck.js";
 
 window.addEventListener('load', function(){
     let cookieValue = getCookie('id');
     if (cookieValue){
-	ans = check();
+	const ans = check();
 	if (ans) {
 	    window.location.href = '/';
 	    return;

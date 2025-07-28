@@ -10,11 +10,12 @@ bladerunner -*- mode: org -*-
 ** DONE Rewrite functions with codes
 ** DONE varchar(64) -> 128
 ** Recheck varchar extension
+
 * Server
 ** DONE Salt password for psql, create new file for this action
 ** DONE Take password for psql from os
 ** DONE Checking cookie
-** TODO Finish writing cookie.py
+** DONE Finish writing cookie.py
 *** DONE Show str in form object
 *** DONE Return response 200 or 403
 ** TODO Do requests from /login to check cookie
@@ -26,5 +27,6 @@ bladerunner -*- mode: org -*-
 ** TODO Make cookieCheck for fetching from /api/cooking
 *** TODO For index.js
 *** TODO For login.js
+
 * bladerunner
 ** Optimize docker, too many downloads, cash
