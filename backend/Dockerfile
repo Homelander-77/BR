@@ -1,4 +1,4 @@
-FROM python:3.10-alpine
+FROM python:3.9-alpine
 WORKDIR /server
 
 COPY app.py login.py parser.py psql_config.py psql.py response.py requirements.txt common_passwords.txt password_check.py registration.py salt.py cookie.py /server

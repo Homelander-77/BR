@@ -3,13 +3,14 @@ import { check } from "./cookieCheck.js";
 window.addEventListener('load', function(){
     let cookieValue = getCookie('id');
     if (cookieValue){
-	const ans = check();
-	if (ans) {
-	    window.location.href = '/';
-	    return;
-	} else {
-	    deleteCookie();
-	}
+	check().then(ans => {
+	    if (ans) {
+		window.location.href = '/';
+		return;
+	    } else {
+		deleteCookie();
+	    } 
+	});
     }
     document.getElementById('button').addEventListener('click', login);
 });

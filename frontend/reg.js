@@ -1,3 +1,14 @@
+import { check } from './cookieCheck.js';
+
+window.addEventListener('load', function() {
+    check().then(ans => {
+	if (!ans) {
+	    window.location.href = '/login';
+	}
+    });
+});
+
+
 document.getElementById('registrationForm').addEventListener('submit', function(e) {
     e.preventDefault();
     reg();
@@ -130,7 +141,6 @@ function reg() {
 			      password: password})
     })
 	    .then(res => {
-		console.log(res.status);
 		if (res.status === 400) {
 		    edit_common();
 		    alert("Bad Request: Please check your input and try again.");

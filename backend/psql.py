@@ -41,7 +41,6 @@ class Database:
         self.cur.callproc("set_cookie", (login, cookie['id'], cookie['expire']))
         ans = self.cur.fetchone()
         self.conn.commit()
-        return ans[0]
 
     def get_cookie_expire(self, cookie):
         self.cur.callproc("get_cookie_expire", (cookie,))
