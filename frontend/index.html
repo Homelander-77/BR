@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Стартовая Страница</title>
-    <style>
+  </head>
+  <body>
+    <script type="module" src='./index.js?1'></script>
+    <div id='login' style='display: none'></div>
+    <div class="container" id='hello' style='display: none'>
+      <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f0f0;
@@ -72,13 +77,10 @@
             opacity: 0.5;
             z-index: -1; /* Помещаем изображение под контент */
         }
-    </style>
-</head>
-<body>
-<script type="module" src='./index.js?1'></script>
-<div class="container" id='hello' style='display: none'>
-  <h1>Добро Пожаловать!</h1>       
-</div>    
+      </style>
 
-</body>
+      <h1>Добро Пожаловать!</h1>       
+    </div>    
+
+  </body>
 </html>

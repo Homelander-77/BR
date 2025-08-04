@@ -1,9 +1,12 @@
 export async function loadLoginForm() {
     const response = await fetch('./login.html');
-    const html = response.text;
+    const html = await response.text();
 
-    document.getElementById('hello').innerHTML = html;
+    const loginDiv = document.getElementById('login');
+    loginDiv.innerHTML = html;
+    loginDiv.style.display = 'block';
     
-    const { login } = await import('./login.js');
-    login();
+    
+    const { loginUser } = await import('./login.js');
+    await loginUser();
 }

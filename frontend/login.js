@@ -1,6 +1,6 @@
 import { check } from "./cookieCheck.js";
 
-window.addEventListener('load', function(){
+window.addEventListener('load', async function(){
     check().then(ans => {
 	if (ans) {
 	    window.location.href = '/';
@@ -9,21 +9,21 @@ window.addEventListener('load', function(){
 	    deleteCookie();
 	} 
     });
-    login();
+    await loginUser();
 });
 
 function deleteCookie() {
     document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 
-function login() {
+export async function loginUser() {
     document.getElementById('button').addEventListener('click', async (e) => {
 	fetch('/api/login', {
 	    method: 'POST',
 	    headers: {
 		'Content-Type': 'application/json'
 	    },
-	    body: JSON.stringify({login: document.getElementById('login').value, 
+	    body: JSON.stringify({login: document.getElementById('userLogin').value, 
 			      password: document.getElementById('password').value})
 	})
 	    .then(res => {
@@ -38,6 +38,7 @@ function login() {
 		if (!json.success){
 		    document.getElementById('error').style.display = 'block';
 		} else {
+		    document.getElementById('login').style.display = 'none';
 		    window.location.href = '/';
 		}
 	    });

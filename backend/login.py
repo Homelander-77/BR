@@ -5,6 +5,7 @@ from salt import verify_password
 
 
 def login(request, database):
+    print(request.body)
     in_login, in_password = request.body["login"], request.body["password"]
     if verify_password(in_login, in_password, database):
         ans = json.dumps({"success": True})
