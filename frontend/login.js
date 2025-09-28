@@ -38,7 +38,6 @@ export async function loginUser() {
 		if (!json.success){
 		    document.getElementById('error').style.display = 'block';
 		} else {
-		    document.getElementById('login').style.display = 'none';
 		    window.location.href = '/';
 		}
 	    });
