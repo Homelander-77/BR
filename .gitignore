@@ -1,3 +1,4 @@
 backend/__pycache__/
 .todo
 services/cert/*
+git_load.sh

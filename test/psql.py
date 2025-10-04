@@ -24,9 +24,11 @@ class Database:
     def get_rec(self):
         self.cur.callproc('get_recommendations', ())
         ans = self.cur.fetchall()
-        return json.loads(ans)
+        return json.loads(json.dumps(ans))[0][0]
 
 
 psql = Database()
 psql.start()
-print(psql.get_rec())
+ans = psql.get_rec()
+print(ans)
+psql.stop()
