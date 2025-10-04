@@ -10,7 +10,7 @@ bladerunner -*- mode: org -*-
 ** DONE Rewrite functions with codes
 ** DONE varchar(64) -> 128
 ** Recheck varchar extension
-
+** Repair type expire to timestamp
 * Server
 ** DONE Salt password for psql, create new file for this action
 ** DONE Take password for psql from os

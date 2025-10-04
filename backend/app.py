@@ -8,6 +8,7 @@ from psql import Database
 from login import login
 from registration import reg
 from cookie import cookie_check
+from recommendation import rec
 
 
 class Server:
@@ -84,6 +85,7 @@ if __name__ == "__main__":
         server.add_path('/login', login)
         server.add_path('/reg', reg)
         server.add_path('/cookie', cookie_check)
+        server.add_path('/recommendation', rec)
         server.start()
     except KeyboardInterrupt:
         sys.exit(0)
