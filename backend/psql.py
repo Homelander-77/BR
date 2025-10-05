@@ -52,4 +52,3 @@ class Database:
         self.cur.callproc('get_recommendations', ())
         ans = self.cur.fetchall()
         return json.loads(json.dumps(ans))[0][0]
-        

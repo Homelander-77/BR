@@ -29,6 +29,6 @@ class Database:
 
 psql = Database()
 psql.start()
-ans = psql.get_rec()
+ans = json.dumps(psql.get_rec())
 print(ans)
 psql.stop()
