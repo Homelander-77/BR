@@ -23,24 +23,36 @@ const films = [
  ];
 
 function renderFilms() {
-    const container = document.getElementById('films-container');
-    container.innerHTML = '';
-    films.forEach(film => {
-        const card = document.createElement('div');
-        card.className = 'film-card';
-        card.innerHTML = `
-            <img class="film-poster" src="${film.poster}" alt="${film.title}">
+    fetch('/api/recommendations', {
+	method: 'POST',
+	headers: {
+	    'Content-Type': 'application/json'
+	}
+    })
+    .then(res => res.json())
+    .then(films => {
+	for(let i = 0; i < films.length; i++){
+	    const container = document.getElementById('films-container');
+	    container.innerHTML = '';
+	    films.forEach(film => {
+		const card = document.createElement('div');
+		card.className = 'film-card';
+		card.innerHTML = `
+            <img class="film-poster" src="${film.f_path}" alt="${film.f_name}">
             <div class="film-info">
-                <div class="film-title">${film.title}</div>
-                <div class="film-desc">${film.desc}</div>
+                <div class="film-title">${film.f_name}</div>
+                <div class="film-desc">${film.f_view}</div>
                 <div class="film-meta">
-                    <span>${film.year}</span>
-                    <span>⭐ ${film.rating}</span>
+                    <span>${film.f_graduation}</span>
+                    <span>⭐ ${film.f_r}</span>
                 </div>
             </div>
         `;
-        container.appendChild(card);
-    });
+		container.appendChild(card);
+	    });
+	}
+    })
+	.catch(err => console.error('Error loading films:', err));;
 }
 
 document.addEventListener('DOMContentLoaded', renderFilms);
