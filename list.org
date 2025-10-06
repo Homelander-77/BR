@@ -1,3 +1,4 @@
+
 bladerunner -*- mode: org -*-
 
 * Postgres
@@ -11,6 +12,8 @@ bladerunner -*- mode: org -*-
 ** DONE varchar(64) -> 128
 ** Recheck varchar extension
 ** Repair type expire to timestamp
+** ENV PSQL_PASSWORD=your_password to .env, read about
+
 * Server
 ** DONE Salt password for psql, create new file for this action
 ** DONE Take password for psql from os
@@ -19,8 +22,8 @@ bladerunner -*- mode: org -*-
 *** DONE Show str in form object
 *** DONE Return response 200 or 403
 ** TODO Do requests from /login to check cookie
-** replace common_passwords.txt and Dockerfile of backend
-
+** DONE replace common_passwords.txt and Dockerfile of backend
+** take common_passwords from dir upper, rewrite Docker and py
 * Frontend
 ** DONE Registration html
 ** DONE JS for reg
