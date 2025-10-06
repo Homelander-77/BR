@@ -23,7 +23,7 @@ bladerunner -*- mode: org -*-
 *** DONE Return response 200 or 403
 ** TODO Do requests from /login to check cookie
 ** DONE replace common_passwords.txt and Dockerfile of backend
-** take common_passwords from dir upper, rewrite Docker and py
+** take common_passwords from dir /var/data, rewrite Docker and py
 * Frontend
 ** DONE Registration html
 ** DONE JS for reg
