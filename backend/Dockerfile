@@ -1,7 +1,7 @@
 FROM python:3.9-alpine
 WORKDIR /server
 
-COPY app.py login.py parser.py psql_config.py psql.py response.py requirements.txt common_passwords.txt password_check.py registration.py salt.py cookie.py /server
+COPY app.py login.py parser.py psql_config.py psql.py response.py requirements.txt password_check.py registration.py salt.py cookie.py /res/common_passwords.txt /server
 COPY resolv.conf /etc/resolv.conf
 
 EXPOSE 8080

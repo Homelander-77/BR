@@ -19,6 +19,7 @@ bladerunner -*- mode: org -*-
 *** DONE Show str in form object
 *** DONE Return response 200 or 403
 ** TODO Do requests from /login to check cookie
+** replace common_passwords.txt and Dockerfile of backend
 
 * Frontend
 ** DONE Registration html
