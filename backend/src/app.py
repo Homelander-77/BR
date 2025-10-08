@@ -1,6 +1,7 @@
 import socket
 import sys
 import select
+import http
 from dotenv import load_dotenv
 
 from config import conf
@@ -62,7 +63,7 @@ class Server:
             if request.path in self.paths.keys():
                 response = self.paths[request.path](request, self.pg)
             else:
-                makeResponse = MakeHTTPResponse(404, '')
+                makeResponse = MakeHTTPResponse(http.HTTPStatus.NOT_FOUND, '')
                 response = makeResponse.make(cookie=False)
 
             print(response.decode())

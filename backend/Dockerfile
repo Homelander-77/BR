@@ -6,7 +6,7 @@ EXPOSE 8080
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirror.yandex.ru\/mirrors/g' /etc/apk/repositories
 RUN apk update && apk add --no-cache gcc musl-dev python3-dev libpq-dev cracklib cracklib-dev
 
-RUN pip install --no-cache-dir cracklib psycopg2-2.9.10 python-dotenv
+RUN pip install --no-cache-dir cracklib psycopg2-2.9.10 python-dotenv http
 
 ENV PSQL_PASSWORD=your_password
 
