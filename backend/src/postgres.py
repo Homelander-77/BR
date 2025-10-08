@@ -1,5 +1,5 @@
 import psycopg2
-import psql_config
+import pg_config
 import json
 
 
@@ -10,11 +10,11 @@ class Database:
 
     def start(self):
         self.conn = psycopg2.connect(
-            dbname=psql_config.param['dbname'],
-            user=psql_config.param['user'],
-            password=psql_config.param['password'],
-            host=psql_config.param['host'],
-            port=psql_config.param['port'])
+            dbname=pg_config.param['db_name'],
+            user=pg_config.param['db_user'],
+            password=pg_config.param['db_password'],
+            host=pg_config.param['db_host'],
+            port=pg_config.param['db_port'])
         self.cur = self.conn.cursor()
 
     def stop(self):
@@ -40,7 +40,6 @@ class Database:
 
     def add_cookie(self, login, cookie):
         self.cur.callproc("set_cookie", (login, cookie['id'], cookie['expire']))
-        ans = self.cur.fetchone()
         self.conn.commit()
 
     def get_cookie_expire(self, cookie):

@@ -1,10 +1,12 @@
 import socket
 import sys
 import select
+from dotenv import load_dotenv
 
+from config import conf
 from parser import HTTPRequest
 from response import MakeHTTPResponse
-from psql import Database
+from postgres import Database
 from login import login
 from registration import reg
 from cookie import cookie_check
@@ -13,7 +15,6 @@ from recommendations import rec
 
 class Server:
     def __init__(self, server_addr):
-
         self.server_addr = server_addr
         self.paths = {}
         self.sockets_list = []
@@ -21,11 +22,11 @@ class Server:
     def start(self):
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.bind(self.server_addr)
-        self.lsock.listen(5)
+        self.lsock.listen(conf.server_max_con)
         self.sockets_list.append(self.lsock)
         print(f"Listening on {self.server_addr}")
-        self.psql = Database()
-        self.psql.start()
+        self.pg = Database()
+        self.pg.start()
 
         while True:
             read_sockets, _, _ = select.select(self.sockets_list, [], [])
@@ -40,7 +41,7 @@ class Server:
 
     def service_connection(self, conn):
         try:
-            recv = conn.recv(1024)
+            recv = conn.recv(conf['server_rec_mes'])
             message = recv
             if not message:
                 print("Close connection, no data")
@@ -59,7 +60,7 @@ class Server:
         if message:
             request = HTTPRequest(message.decode())
             if request.path in self.paths.keys():
-                response = self.paths[request.path](request, self.psql)
+                response = self.paths[request.path](request, self.pg)
             else:
                 makeResponse = MakeHTTPResponse(404, '')
                 response = makeResponse.make(cookie=False)
@@ -78,8 +79,9 @@ class Server:
 
 
 if __name__ == "__main__":
-    ip = '0.0.0.0'
-    port = 8080
+    load_dotenv()
+    ip = conf['server_ip_address']
+    port = conf['server_port']
     server = Server((ip, port))
     try:
         server.add_path('/login', login)

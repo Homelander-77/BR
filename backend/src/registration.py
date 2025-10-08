@@ -5,7 +5,7 @@ from response import MakeHTTPResponse
 from cookie import cookie_create
 
 
-def reg(request, psql):
+def reg(request, database):
     firstname, lastname = request.body["firstname"], request.body["lastname"]
     mail, password = request.body["login"], request.body["password"]
     ans = check(firstname, lastname, mail, password)
@@ -13,7 +13,7 @@ def reg(request, psql):
         salt = generate_salt()
         password = salt_password(password, salt)
         cookie = cookie_create()
-        psql.add_user(firstname, lastname, mail, password, salt, cookie)
+        database.add_user(firstname, lastname, mail, password, salt, cookie)
         response = MakeHTTPResponse(200, json.dumps(ans)).make(cookie=cookie)
         return response
     response = MakeHTTPResponse(400, json.dumps(ans)).make(cookie={})
