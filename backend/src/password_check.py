@@ -31,7 +31,7 @@ def validate_by_similarity(firstname: str, lastname: str, mail: str, password: s
 
 
 def validate_by_common_list(password: str):
-    path = './res/common_passwords.txt'
+    path = '/var/data/common_passwords.txt'
     max_similatiry = 0.7
 
     with open('./' + path, 'r') as f:
