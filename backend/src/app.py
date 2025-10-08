@@ -1,5 +1,4 @@
 import sys
-from dotenv import load_dotenv
 
 from server import Server
 from config import conf
@@ -10,7 +9,6 @@ from recommendations import rec
 
 
 if __name__ == "__main__":
-    load_dotenv()
     ip = conf['server_ip_address']
     port = conf['server_port']
     server = Server((ip, port))

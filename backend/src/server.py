@@ -17,7 +17,7 @@ class Server:
     def start(self):
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.bind(self.server_addr)
-        self.lsock.listen(conf.server_max_con)
+        self.lsock.listen(conf['server_max_con'])
         self.sockets_list.append(self.lsock)
         print(f"Listening on {self.server_addr}")
         self.pg = Database()

@@ -10,11 +10,11 @@ class Database:
 
     def start(self):
         self.conn = psycopg2.connect(
-            dbname=conf.param['db_name'],
-            user=conf.param['db_user'],
-            password=conf.param['db_password'],
-            host=conf.param['db_host'],
-            port=conf.param['db_port'])
+            dbname=conf['db_name'],
+            user=conf['db_user'],
+            password=conf['db_password'],
+            host=conf['db_host'],
+            port=conf['db_port'])
         self.cur = self.conn.cursor()
 
     def stop(self):

@@ -3,8 +3,8 @@
 
 docker volume create hs3;
 docker build -t postgres ./services/psql/;
-docker build -t nginx -f ./services/nginx/Dockerfile .;
-docker build -t server ./backend;
+docker build -t nginx:1.0 -f ./services/nginx/Dockerfile .;
+docker build -t server:1.0 ./backend;
 
 sudo docker network create -d bridge net;
 
