@@ -1,4 +1,3 @@
-
 bladerunner -*- mode: org -*-
 
 * Postgres
@@ -23,7 +22,7 @@ bladerunner -*- mode: org -*-
 *** DONE Return response 200 or 403
 ** TODO Do requests from /login to check cookie
 ** DONE replace common_passwords.txt and Dockerfile of backend
-** take common_passwords from dir /var/data, rewrite Docker and py
+** DONE take common_passwords from dir /var/data, rewrite Docker and py
 * Frontend
 ** DONE Registration html
 ** DONE JS for reg
@@ -33,5 +32,6 @@ bladerunner -*- mode: org -*-
 *** TODO For login.js
 
 * bladerunner
-** Optimize docker, too many downloads, cash
-** Make limitation of login, passworf and i.e.
+** TODO Optimize docker, too many downloads, cash
+** Make limitation of login, password and i.e.
+   
