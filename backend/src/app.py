@@ -16,7 +16,7 @@ if __name__ == "__main__":
         server.add_path('/login', login)
         server.add_path('/reg', reg)
         server.add_path('/cookie', cookie_check)
-        server.add_path('/recommendations', rec)
+        server.add_path('/rec', rec)
         server.start()
     except KeyboardInterrupt:
         sys.exit(0)
