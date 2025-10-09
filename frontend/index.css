@@ -1,8 +1,14 @@
+/* ===== General Styles ===== */
 body {
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #181818;
     color: #fff;
+}
+
+/* Hidden class for toggling visibility */
+.hidden {
+    display: none;
 }
 
 header {

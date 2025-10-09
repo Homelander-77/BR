@@ -6,14 +6,14 @@ window.addEventListener('load', async function() {
 	const { loadLoginForm } = await import('./loginLoader.js');
 	await loadLoginForm();
     } else {
-	document.getElementById('login').style.display = 'none';
-	const hello = document.getElementById('main');
-	hello.style.display = 'block';
+	document.getElementById('login').classList.add('hidden');
+	document.getElementById('main').classList.remove('hidden');
+	renderFilms();
     }
 });
 
 function renderFilms() {
-    fetch('/api/recommendations', {
+    fetch('/api/rec', {
 	method: 'POST',
 	headers: {
 	    'Content-Type': 'application/json'
@@ -43,4 +43,3 @@ function renderFilms() {
 	.catch(err => console.error('Error loading films:', err));;
 }
 
-document.addEventListener('DOMContentLoaded', renderFilms);

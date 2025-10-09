@@ -34,7 +34,7 @@ def validate_by_common_list(password: str):
     path = '/var/data/common_passwords.txt'
     max_similatiry = 0.7
 
-    with open('./' + path, 'r') as f:
+    with open(path, 'r') as f:
         for line in dropwhile(lambda x: x.startswith('#'), f):
             common = line.strip().split(':')[-1]
             diff = SequenceMatcher(a=password.lower(), b=common)

@@ -7,32 +7,35 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <div id='login' style='display: none'></div>
-  <div id="main" style="display:none">
-  <header>
-    <nav class="navbar">
-      <div class="logo">🎬 FilmShop</div>
-      <ul class="menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Genres</a></li>
-        <li><a href="#">Top Rated</a></li>
-        <li><a href="#">New Releases</a></li>
-        <li><a href="#">My List</a></li>
-      </ul>
-      <div class="profile">
-        <a href="#profile">Profile</a>
-      </div>
-    </nav>
-  </header>
-  <main>
-    <section class="recommendations">
-      <h2>Recommended for You</h2>
-      <div class="films" id="films-container">
-        <!-- Films will be loaded here by JS -->
-      </div>
-    </section>
-  </main>
-  <script type="module" src="index.js"></script>
+  <!-- Login screen hidden initially -->
+  <div id="login"></div>
+
+  <!-- Main content hidden initially -->
+  <div id="main" class="hidden">
+    <header>
+      <nav class="navbar">
+        <div class="logo">🎬 FilmShop</div>
+        <ul class="menu">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Genres</a></li>
+          <li><a href="#">Top Rated</a></li>
+          <li><a href="#">New Releases</a></li>
+          <li><a href="#">My List</a></li>
+        </ul>
+        <div class="profile">
+          <a href="#profile">Profile</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="recommendations">
+        <h2>Recommended for You</h2>
+        <div class="films" id="films-container">
+          <!-- Films will be loaded here by JS -->
+        </div>
+      </section>
+    </main>
   </div>
+  <script type="module" src="index.js"></script>
 </body>
 </html>

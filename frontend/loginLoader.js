@@ -4,8 +4,6 @@ export async function loadLoginForm() {
 
     const loginDiv = document.getElementById('login');
     loginDiv.innerHTML = html;
-    loginDiv.style.display = 'block';
-    
     
     const { loginUser } = await import('./login.js');
     await loginUser();
