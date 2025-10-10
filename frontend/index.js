@@ -1,16 +1,37 @@
 import { check } from "./cookieCheck.js";
 
-window.addEventListener('load', async function() {
+window.addEventListener('DOMContentLoaded', async function() {
     const ans = await check();
     if (!ans) {
 	const { loadLoginForm } = await import('./loginLoader.js');
 	await loadLoginForm();
     } else {
+	await loadCSS("./index.css");
 	document.getElementById('login').classList.add('hidden');
 	document.getElementById('main').classList.remove('hidden');
-	renderFilms();
+	setTimeout(renderFilms, 50);
     }
+
 });
+
+async function loadCSS(href) {
+  document.querySelectorAll('link[href*="login.css"]').forEach(link => link.remove());
+
+  return new Promise((resolve, reject) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href + '?v=' + Date.now(); // для обхода кеша
+    link.onload = () => {
+      console.log("✅ CSS loaded:", href);
+      resolve(link);
+    };
+    link.onerror = (e) => {
+      console.error("❌ CSS load failed:", href, e);
+      reject(e);
+    };
+    document.head.appendChild(link);
+  });
+}
 
 function renderFilms() {
     fetch('/api/rec', {
