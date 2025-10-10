@@ -3,26 +3,27 @@ import { check } from "./cookieCheck.js";
 window.addEventListener('DOMContentLoaded', async function() {
     const ans = await check();
     if (!ans) {
+	await loadCSS('./login.css');
 	const { loadLoginForm } = await import('./loginLoader.js');
 	await loadLoginForm();
     } else {
-	await loadCSS("./index.css");
-	document.getElementById('login').classList.add('hidden');
+	document.querySelectorAll('link[href*="login.css"]').forEach(link => link.remove());
+	await loadCSS('./index.css');
+	document.getElementById('login').innerHTML = '';
 	document.getElementById('main').classList.remove('hidden');
-	setTimeout(renderFilms, 50);
+	renderFilms();
     }
 
 });
 
 async function loadCSS(href) {
-  document.querySelectorAll('link[href*="login.css"]').forEach(link => link.remove());
-
+  console.log("📦 trying to load:", href);
   return new Promise((resolve, reject) => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = href + '?v=' + Date.now(); // для обхода кеша
+    link.href = href + '?v=' + Date.now();
     link.onload = () => {
-      console.log("✅ CSS loaded:", href);
+      console.log("✅ CSS loaded and appended:", href);
       resolve(link);
     };
     link.onerror = (e) => {
@@ -30,9 +31,9 @@ async function loadCSS(href) {
       reject(e);
     };
     document.head.appendChild(link);
+    console.log("📄 link appended to <head>:", link);
   });
 }
-
 function renderFilms() {
     fetch('/api/rec', {
 	method: 'POST',
