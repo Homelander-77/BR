@@ -17,21 +17,17 @@ window.addEventListener('DOMContentLoaded', async function() {
 });
 
 async function loadCSS(href) {
-  console.log("📦 trying to load:", href);
   return new Promise((resolve, reject) => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = href + '?v=' + Date.now();
     link.onload = () => {
-      console.log("✅ CSS loaded and appended:", href);
       resolve(link);
     };
     link.onerror = (e) => {
-      console.error("❌ CSS load failed:", href, e);
       reject(e);
     };
     document.head.appendChild(link);
-    console.log("📄 link appended to <head>:", link);
   });
 }
 function renderFilms() {
