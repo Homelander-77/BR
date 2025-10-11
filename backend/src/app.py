@@ -9,7 +9,7 @@ from recommendations import rec
 
 
 if __name__ == "__main__":
-    ip = conf['server_ip_address']
+    host = conf['server_host']
     port = conf['server_port']
     server = Server((ip, port))
     try:

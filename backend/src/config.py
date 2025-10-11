@@ -1,7 +1,7 @@
 import os
 
 conf = dict(
-    server_ip_address=str(os.getenv("SERVER_IP_ADDRESS")),
+    server_host=str(os.getenv("SERVER_HOST")),
     server_port=int(os.getenv("SERVER_PORT", 8080)),
     server_max_con=5,
     server_rec_mes=1024,
