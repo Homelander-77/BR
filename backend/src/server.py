@@ -38,14 +38,17 @@ class Server:
         try:
             recv = conn.recv(conf['server_rec_mes'])
             message = recv
+
             if not message:
                 print("Close connection, no data")
                 self.sockets_list.remove(conn)
                 conn.close()
                 return ''
+
             while b'\r\n\r\n' not in message:
                 recv = conn.recv(1024)
                 message += recv
+
         except ConnectionResetError:
             print("Close connection because of ConnectionResetError")
             self.sockets_list.remove(conn)
@@ -54,6 +57,7 @@ class Server:
 
         if message:
             request = HTTPRequest(message.decode())
+
             if request.path in self.paths.keys():
                 response = self.paths[request.path](request, self.pg)
             else:
