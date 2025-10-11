@@ -11,7 +11,7 @@ from recommendations import rec
 if __name__ == "__main__":
     host = conf['server_host']
     port = conf['server_port']
-    server = Server((ip, port))
+    server = Server((host, port))
     try:
         server.add_path('/login', login)
         server.add_path('/reg', reg)
