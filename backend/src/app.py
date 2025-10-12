@@ -1,6 +1,7 @@
 import sys
 
 from server import Server
+from postgres import Database
 from config import conf
 from login import login
 from registration import reg
@@ -11,7 +12,8 @@ from recommendations import rec
 if __name__ == "__main__":
     host = conf['server_host']
     port = conf['server_port']
-    server = Server((host, port))
+    pg = Database().start()
+    server = Server((host, port), pg)
     try:
         server.add_path('/login', login)
         server.add_path('/reg', reg)

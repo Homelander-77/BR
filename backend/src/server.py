@@ -9,8 +9,9 @@ from parser import HTTPRequest
 
 
 class Server:
-    def __init__(self, server_addr):
+    def __init__(self, server_addr, pg):
         self.server_addr = server_addr
+        self.pg = pg
         self.paths = {}
         self.sockets_list = []
 
@@ -20,8 +21,6 @@ class Server:
         self.lsock.listen(conf['server_max_con'])
         self.sockets_list.append(self.lsock)
         print(f"Listening on {self.server_addr}")
-        self.pg = Database()
-        self.pg.start()
 
         while True:
             read_sockets, _, _ = select.select(self.sockets_list, [], [])
