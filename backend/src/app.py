@@ -12,7 +12,7 @@ from recommendations import rec
 if __name__ == "__main__":
     host = conf['server_host']
     port = conf['server_port']
-    pg = Database().start()
+    pg = Database()
     server = Server((host, port), pg)
     try:
         server.add_path('/login', login)

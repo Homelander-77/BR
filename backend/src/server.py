@@ -3,7 +3,6 @@ import select
 import http
 
 from config import conf
-from postgres import Database
 from response import MakeHTTPResponse
 from parser import HTTPRequest
 
@@ -21,6 +20,7 @@ class Server:
         self.lsock.listen(conf['server_max_con'])
         self.sockets_list.append(self.lsock)
         print(f"Listening on {self.server_addr}")
+        self.pg.start()
 
         while True:
             read_sockets, _, _ = select.select(self.sockets_list, [], [])

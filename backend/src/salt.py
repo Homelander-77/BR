@@ -16,6 +16,7 @@ def salt_password(password: str, salt):
 
 def verify_password(input_login, input_password, database):
     password = database.get_password_by_login(input_login)
+    print(input_login, input_password, database)
     if password:
         input_salt = database.get_salt_by_login(input_login)
         input_hash = salt_password(input_password, input_salt)
