@@ -1,9 +1,9 @@
 import json
 import http
 
-from response import MakeHTTPResponse
-from cookie_create import cookie_create
-from salt import salt_password
+from utils.response import MakeHTTPResponse
+from utils.cookie_create import cookie_create
+from utils.salt import salt_password
 
 
 def verify_password(input_login, input_password, database):

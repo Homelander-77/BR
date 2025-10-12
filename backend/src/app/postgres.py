@@ -1,6 +1,7 @@
 import psycopg2
-from config import conf
 import json
+
+from .config import conf
 
 
 class Database:

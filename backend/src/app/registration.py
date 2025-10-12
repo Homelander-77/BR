@@ -1,10 +1,10 @@
 import json
 import http
 
-from password_check import check
-from salt import salt_password, generate_salt
-from response import MakeHTTPResponse
-from cookie_create import cookie_create
+from utils.password_check import check
+from utils.salt import salt_password, generate_salt
+from utils.response import MakeHTTPResponse
+from utils.cookie_create import cookie_create
 
 
 def reg(request, database):

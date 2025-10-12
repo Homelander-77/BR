@@ -1,7 +1,7 @@
 import http
 
 from datetime import datetime
-from response import MakeHTTPResponse
+from utils.response import MakeHTTPResponse
 
 
 def cookie_check(request, database):

@@ -2,9 +2,9 @@ import socket
 import select
 import http
 
-from config import conf
-from response import MakeHTTPResponse
-from parser import HTTPRequest
+from .config import conf
+from utils.response import MakeHTTPResponse
+from utils.parser import HTTPRequest
 
 
 class Server:
