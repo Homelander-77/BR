@@ -10,4 +10,4 @@ COPY resolv.conf /etc/resolv.conf
 COPY src/  /server/
 COPY resources/common_passwords.txt /var/data/
 
-CMD python src.app.app.py
+CMD python -m app.app
