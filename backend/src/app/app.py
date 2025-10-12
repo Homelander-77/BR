@@ -5,7 +5,7 @@ from postgres import Database
 from config import conf
 from login import login
 from registration import reg
-from cookie import cookie_check
+from cookie_check import cookie_check
 from recommendations import rec
 
 
