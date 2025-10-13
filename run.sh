@@ -1,2 +1,2 @@
-docker run --rm --name postgres --network net -d -p 5432:5432 -v hs3:/var/lib/postgresql/data postgres:latest;
+docker run --rm --name postgres --network net -d -p 5432:5432 -v hs4:/var/lib/postgresql/data postgres:1.0;
 docker run --rm -dit --name server --network net -p 8080:8080 --env-file ./backend/src/.env --add-host=host.docker.internal:host-gateway server:1.0 & docker run --rm -dit --name nginx --network net -p 80:80 -p 443:443 nginx:1.0;
