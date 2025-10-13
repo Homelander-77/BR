@@ -4,5 +4,4 @@ ENV POSTGRES_PORT 5432
 ENV POSTGRES_DB boss
 ENV POSTGRES_USER boss
 
-
-# POSTGRES_PASSWORD=$PSQL_PASSWORD -e POSTGRES_USER=a1337 -e POSTGRES_DB=a1337
+COPY ./services/postgres/database.sql ./services/postgres/films.sql /docker-entrypoint-initdb.d/
