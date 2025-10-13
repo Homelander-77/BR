@@ -11,4 +11,5 @@ sudo docker network create -d bridge net;
 docker run --name postgres -d -p 5432:5432 -v hs3:/var/lib/postgresql/data postgres;
 # docker exec -i postgres psql -U postgres < ./services/psql/init.sql;
 docker exec -i postgres psql -U boss -d boss < ./services/psql/database.sql;
+docker exec -i postgres psql -U boss -d boss < ./services/psql/films.sql;
 docker stop postgres;
