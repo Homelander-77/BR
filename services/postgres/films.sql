@@ -1,3 +1,4 @@
+-- Creating table for list of films
 create table films (
 	f_id serial unique,
 	f_name varchar(255),
@@ -8,8 +9,7 @@ create table films (
 	f_price int
 	);
 
-drop table films;
-
+-- Data of film's table
 insert into films (f_name, f_path, f_graduation, f_view, f_r, f_price)
 values ('Cars', '/images/cars.jpg', 2006,
 	'On the way to the biggest race of his life, a hotshot rookie race car gets stranded in a rundown town and learns that winning isnt everything in life.', 
@@ -20,9 +20,7 @@ values ('Interstellar', '/images/interstellar.jpg', 2014,
 	'When Earth becomes uninhabitable in the future, a farmer and ex-NASA pilot, Joseph Cooper, is tasked to pilot a spacecraft, along with a team of researchers, to find a new planet for humans.', 
 	9.1, 15);
 
-	
-select * from films; 
-
+-- function for getting list of films
 create or replace function get_recommendations()
 returns jsonb as $$
 begin

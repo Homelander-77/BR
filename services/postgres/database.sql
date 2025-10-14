@@ -4,6 +4,7 @@ create table users (
 	firstname varchar(32) not null,
 	lastname varchar(32) not null );
 
+
 -- Creating table with login and password
 create table login_password (
 	user_id integer primary key,
@@ -11,11 +12,13 @@ create table login_password (
 	password varchar(96) not null,
 	foreign key (user_id) references users (id) on delete cascade );
 
+
 -- Creating table with salt for password
 create table salt (
 	user_id integer primary key,
 	salt varchar(32) not null,
 	foreign key (user_id) references login_password (user_id) on delete cascade );
+
 
 -- Creating table with cookie
 create table cookie (
@@ -23,6 +26,7 @@ create table cookie (
 	cookie varchar(36) not null,
 	expire varchar(64) not null,
 	foreign key (user_id) references users (id) on delete cascade );
+
 
 -- function for adding user
 create or replace function add_user(
@@ -63,6 +67,7 @@ end;
 $$ language plpgsql;
 
 
+-- function for setting user cookie 
 create or replace function set_cookie(in_login varchar(64), in_cookie varchar(36), in_expire varchar(64))
 returns boolean
 as $$
@@ -80,9 +85,8 @@ begin
 end;
 $$ language plpgsql;
 
-select * from set_cookie('eeggorr120207@outlook.com', '123', '12');
-select * from cookie;
 
+-- function for getting cookie expire
 create or replace function get_cookie_expire(in_cookie text)
 returns text
 as $$
@@ -111,6 +115,7 @@ begin
 	return password;
 end;
 $$ language plpgsql;
+
 
 -- get salt using only login
 create or replace function get_salt_by_login(in_login varchar(64))
