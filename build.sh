@@ -4,7 +4,7 @@ sudo certbot certonly --standalone  -d $DOMAIN_NAME --config-dir ./services/ngin
 sudo chown -R $USER_NAME:$USER_NAME ./services/nginx/cert;
 
 docker volume create hs4;
-docker build -t postgres ./services/postgres/;
+docker build -t postgres:1.0 -f ./services/postgres/Dockerfile .;
 docker build -t nginx:1.0 -f ./services/nginx/Dockerfile .;
 docker build -t server:1.0 ./backend;
 
