@@ -1,14 +1,20 @@
-FROM python:3.9-alpine
+FROM python:3.10-bookworm
 
 WORKDIR /server
 
-COPY repositories /etc/apk/repositories
-
-RUN apk update && apk add --no-cache gcc musl-dev cracklib-dev
-
-RUN pip install --no-cache-dir cracklib psycopg2-binary python-dotenv
-
+COPY sources.list /etc/apt/sources.list
 COPY resolv.conf /etc/resolv.conf
+
+RUN apt-get update -o Acquire::Retries=5 -o Acquire::http::Timeout="30" \
+ && apt-get install -y --no-install-recommends gcc libpq-dev python3-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN python -m pip install --upgrade pip
+RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    --default-timeout=100 \
+    psycopg2-binary python-dotenv
+
+
 COPY src/  /server/
 COPY resources/common_passwords.txt /var/data/
 
