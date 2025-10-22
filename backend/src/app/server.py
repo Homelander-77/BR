@@ -1,6 +1,7 @@
 import socket
 import select
 import http
+import signal
 
 from .config import server_conf
 from utils.response import MakeHTTPResponse
@@ -8,11 +9,11 @@ from utils.parser import HTTPRequest
 
 
 class Server:
-    def __init__(self, server_addr, pg):
+    def __init__(self, server_addr):
         self.server_addr = server_addr
-        self.pg = pg
         self.paths = {}
         self.sockets_list = []
+        self.stop = False
 
     def start(self):
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,9 +21,10 @@ class Server:
         self.lsock.listen(server_conf['max_con'])
         self.sockets_list.append(self.lsock)
         print(f"Listening on {self.server_addr}")
-        self.pg.start()
 
-        while True:
+        signal.signal(signal.SIGINT, lambda s, f: self.stop())
+
+        while not self.stop:
             read_sockets, _, _ = select.select(self.sockets_list, [], [])
             for notified_socket in read_sockets:
                 if notified_socket == self.lsock:
@@ -32,7 +34,19 @@ class Server:
                     self.sockets_list.append(conn)
                 else:
                     self.service_connection(notified_socket)
+        else:
+            self._close_all()
 
+    def request_shutdown(self):
+        print("Shutdown requests")
+        self.stop = True
+
+    def _close_all(self):
+        for sock in self.socket_list:
+            sock.shutdown(socket.SHUT_RDWR)
+            sock.close()
+        print("All sockets closed")
+            
     def service_connection(self, conn):
         try:
             recv = conn.recv(server_conf['rec_mes'])
@@ -58,7 +72,7 @@ class Server:
             request = HTTPRequest(message.decode())
 
             if request.path in self.paths.keys():
-                response = self.paths[request.path](request, self.pg)
+                response = self.paths[request.path](request)
             else:
                 makeResponse = MakeHTTPResponse(http.HTTPStatus.NOT_FOUND, '')
                 response = makeResponse.make(cookie=False)

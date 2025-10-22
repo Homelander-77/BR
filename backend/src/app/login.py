@@ -4,27 +4,30 @@ import http
 from utils.response import MakeHTTPResponse
 from utils.cookie_create import cookie_create
 from utils.salt import salt_password
+from .postgres import Database
 
 
-def verify_password(input_login, input_password, database):
-    password = database.get_password_by_login(input_login)
-    print(input_login, input_password, database)
+def verify_password(input_login, input_password):
+    pg = Database()
+    password = pg.get_password_by_login(input_login)
+    print(input_login, input_password)
     if password:
-        input_salt = database.get_salt_by_login(input_login)
+        input_salt = pg.get_salt_by_login(input_login)
         input_hash = salt_password(input_password, input_salt)
         return input_hash == password
     else:
         return False
 
 
-def login(request, database):
+def login(request):
     print(request.body)
+    pg = Database()
     in_login, in_password = request.body["login"], request.body["password"]
-    if verify_password(in_login, in_password, database):
+    if verify_password(in_login, in_password):
         ans = json.dumps({"success": True})
         cookie = cookie_create()
         response = MakeHTTPResponse(http.HTTPStatus.OK, ans).make(cookie=cookie)
-        database.add_cookie(in_login, cookie)
+        pg.add_cookie(in_login, cookie)
         print('{"success": true}')
         return response
     else:

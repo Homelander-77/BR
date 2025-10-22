@@ -1,15 +1,25 @@
 import psycopg2
 import json
+import threading
 
 from .config import db_conf
 
 
 class Database:
+    __instance = None
+    _lock = threading.Lock()
+
+    def __new__(cls):
+        with cls._lock:
+            if cls.__instance is None:
+                cls.__instance = super(Database, cls).__new__(cls)
+            return cls.__instance
+
     def __init__(self):
         self.conn = None
         self.cur = None
 
-    def start(self):
+    def connect(self):
         self.conn = psycopg2.connect(
             dbname=db_conf['db_name'],
             user=db_conf['user'],
@@ -18,7 +28,7 @@ class Database:
             port=db_conf['port'])
         self.cur = self.conn.cursor()
 
-    def stop(self):
+    def disconnect(self):
         self.cur.close()
         self.conn.close()
 

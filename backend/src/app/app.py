@@ -13,7 +13,8 @@ if __name__ == "__main__":
     host = server_conf['server_host']
     port = server_conf['port']
     pg = Database()
-    server = Server((host, port), pg)
+    pg.connect()
+    server = Server((host, port))
     try:
         server.add_path('/login', login)
         server.add_path('/reg', reg)
@@ -21,4 +22,5 @@ if __name__ == "__main__":
         server.add_path('/rec', rec)
         server.start()
     except KeyboardInterrupt:
+        pg.disconnect()
         sys.exit(0)
