@@ -1,7 +1,7 @@
 import psycopg2
 import json
 
-from .config import conf
+from .config import db_conf
 
 
 class Database:
@@ -11,11 +11,11 @@ class Database:
 
     def start(self):
         self.conn = psycopg2.connect(
-            dbname=conf['db_name'],
-            user=conf['db_user'],
-            password=conf['db_password'],
-            host=conf['db_host'],
-            port=conf['db_port'])
+            dbname=db_conf['db_name'],
+            user=db_conf['user'],
+            password=db_conf['password'],
+            host=db_conf['host'],
+            port=db_conf['port'])
         self.cur = self.conn.cursor()
 
     def stop(self):

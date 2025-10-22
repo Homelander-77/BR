@@ -2,7 +2,7 @@ import socket
 import select
 import http
 
-from .config import conf
+from .config import server_conf
 from utils.response import MakeHTTPResponse
 from utils.parser import HTTPRequest
 
@@ -17,7 +17,7 @@ class Server:
     def start(self):
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.bind(self.server_addr)
-        self.lsock.listen(conf['server_max_con'])
+        self.lsock.listen(server_conf['max_con'])
         self.sockets_list.append(self.lsock)
         print(f"Listening on {self.server_addr}")
         self.pg.start()
@@ -35,7 +35,7 @@ class Server:
 
     def service_connection(self, conn):
         try:
-            recv = conn.recv(conf['server_rec_mes'])
+            recv = conn.recv(server_conf['rec_mes'])
             message = recv
 
             if not message:
