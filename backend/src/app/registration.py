@@ -20,5 +20,5 @@ def reg(request):
         pg.add_user(firstname, lastname, mail, password, salt, cookie)
         response = MakeHTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
         return response
-    response = MakeHTTPResponse(http.HTTPStatus.NOT_FOUND, json.dumps(ans)).make(cookie={})
+    response = MakeHTTPResponse(http.HTTPStatus.UNAUTHORIZED, json.dumps(ans)).make(cookie={})
     return response
