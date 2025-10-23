@@ -17,7 +17,8 @@ def reg(request):
         salt = generate_salt()
         password = salt_password(password, salt)
         cookie = cookie_create()
-        pg.add_user(firstname, lastname, mail, password, salt, cookie)
+        pg.execute_func("add_user", firstname, lastname, mail, password, \
+                        salt, cookie['id'], cookie['expire'])
         response = MakeHTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
         return response
     response = MakeHTTPResponse(http.HTTPStatus.UNAUTHORIZED, json.dumps(ans)).make(cookie={})

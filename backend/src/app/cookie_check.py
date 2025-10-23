@@ -10,7 +10,7 @@ def cookie_check(request):
     time_sample = "%a, %d %b %Y %H:%M:%S GMT"
     if 'Cookie' in request.headers:
         cookie = str(dict([tuple(i.split('=')) for i in request.headers['Cookie'].split('; ')])['id'])
-        time = pg.get_cookie_expire(cookie)
+        time = pg.execute_func("get_cookie_expire", cookie)
         if time:
             expire = datetime.strptime(time, time_sample)
             if datetime.utcnow() < expire:
