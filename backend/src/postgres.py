@@ -1,8 +1,13 @@
 import psycopg2
-import json
 import threading
 
 from .config import db_conf
+
+def lazy_start(method):
+    def wrapper(self, *args, **kwargs):
+        self.connect()
+        return method(self, *args, **kwargs)
+    return wrapper
 
 
 class Database:
@@ -32,6 +37,12 @@ class Database:
         self.cur.close()
         self.conn.close()
 
+    @lazy_start
+    def execute_func(self, func, *args):
+        self.cur.callproc(func, *args)
+        ans = self.cur.fetchall()
+        return ans if len(ans) > 1 else ans[0]
+
     def get_password_by_login(self, login):
         self.cur.callproc("get_password_by_login", (login, ))
         ans = self.cur.fetchone()
@@ -57,8 +68,3 @@ class Database:
         self.cur.callproc("get_cookie_expire", (cookie,))
         ans = self.cur.fetchone()
         return ans[0]
-
-    def get_rec(self):
-        self.cur.callproc('get_recommendations', ())
-        ans = self.cur.fetchall()
-        return json.loads(json.dumps(ans))[0][0]

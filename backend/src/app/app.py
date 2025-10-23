@@ -13,7 +13,6 @@ if __name__ == "__main__":
     host = server_conf['server_host']
     port = server_conf['port']
     pg = Database()
-    pg.connect()
     server = Server((host, port))
     try:
         server.add_path('/login', login)

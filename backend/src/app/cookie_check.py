@@ -2,7 +2,7 @@ import http
 
 from datetime import datetime
 from utils.response import MakeHTTPResponse
-from .postgres import Database
+from ..postgres import Database
 
 
 def cookie_check(request):
