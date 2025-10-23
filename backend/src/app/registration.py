@@ -5,9 +5,11 @@ from utils.password_check import check
 from utils.salt import salt_password, generate_salt
 from utils.response import MakeHTTPResponse
 from utils.cookie_create import cookie_create
+from .postgres import Database
 
 
-def reg(request, database):
+def reg(request):
+    pg = Database()
     firstname, lastname = request.body["firstname"], request.body["lastname"]
     mail, password = request.body["login"], request.body["password"]
     ans = check(firstname, lastname, mail, password)
@@ -15,8 +17,9 @@ def reg(request, database):
         salt = generate_salt()
         password = salt_password(password, salt)
         cookie = cookie_create()
-        database.add_user(firstname, lastname, mail, password, salt, cookie)
+        pg.execute_func("add_user", firstname, lastname, mail, password, \
+                        salt, cookie['id'], cookie['expire'])
         response = MakeHTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
         return response
-    response = MakeHTTPResponse(http.HTTPStatus.NOT_FOUND, json.dumps(ans)).make(cookie={})
+    response = MakeHTTPResponse(http.HTTPStatus.UNAUTHORIZED, json.dumps(ans)).make(cookie={})
     return response
