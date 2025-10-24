@@ -4,7 +4,7 @@ docker run --rm --name postgres --network net -d -v hs4:/var/lib/postgresql/data
 -e POSTGRES_DB=$POSTGRES_DB \
 -e POSTGRES_USER=$POSTGRES_USER \
 postgres:1.0;
-docker run --rm -dit --name server --network net\
+docker run --rm -dit --name server --network net \
 -e SERVER_HOST=0.0.0.0 \
 -e SERVER_PORT=8080 \
 -e DB_NAME=$POSTGRES_DB \

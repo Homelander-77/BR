@@ -2,7 +2,7 @@ import http
 import json
 
 from utils.response import MakeHTTPResponse
-from ..postgres import Database
+from postgres import Database
 
 
 def rec(request):

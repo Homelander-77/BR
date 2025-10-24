@@ -4,7 +4,7 @@ import http
 from utils.response import MakeHTTPResponse
 from utils.cookie_create import cookie_create
 from utils.salt import salt_password
-from ..postgres import Database
+from postgres import Database
 
 
 def verify_password(input_login, input_password):

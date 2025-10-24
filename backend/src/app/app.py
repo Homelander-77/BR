@@ -1,12 +1,12 @@
 import sys
 
-from .server import Server
-from .postgres import Database
-from .config import server_conf
-from .login import login
-from .registration import reg
-from .cookie_check import cookie_check
-from .recommendations import rec
+from server import Server
+from postgres import Database
+from app.config import server_conf
+from app.login import login
+from app.registration import reg
+from app.cookie_check import cookie_check
+from app.recommendations import rec
 
 
 if __name__ == "__main__":
