@@ -5,7 +5,7 @@ from utils.password_check import check
 from utils.salt import salt_password, generate_salt
 from utils.response import MakeHTTPResponse
 from utils.cookie_create import cookie_create
-from ..postgres import Database
+from postgres import Database
 
 
 def reg(request):

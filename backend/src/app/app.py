@@ -10,7 +10,7 @@ from app.recommendations import rec
 
 
 if __name__ == "__main__":
-    host = server_conf['server_host']
+    host = server_conf['host']
     port = server_conf['port']
     pg = Database()
     server = Server((host, port))

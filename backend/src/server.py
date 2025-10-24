@@ -16,16 +16,17 @@ class Server:
         self.stop = False
 
     def start(self):
+        signal.signal(signal.SIGINT, lambda s, f: self.request_shutdown())
+
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.bind(self.server_addr)
         self.lsock.listen(server_conf['max_con'])
         self.sockets_list.append(self.lsock)
         print(f"Listening on {self.server_addr}")
 
-        signal.signal(signal.SIGINT, lambda s, f: self.stop())
-
         while not self.stop:
-            read_sockets, _, _ = select.select(self.sockets_list, [], [])
+            print(self.stop)
+            read_sockets, _, _ = select.select(self.sockets_list, [], [], 1)
             for notified_socket in read_sockets:
                 if notified_socket == self.lsock:
                     conn, addr = self.lsock.accept()
@@ -42,11 +43,11 @@ class Server:
         self.stop = True
 
     def _close_all(self):
-        for sock in self.socket_list:
+        for sock in self.sockets_list:
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
         print("All sockets closed")
-            
+
     def service_connection(self, conn):
         try:
             recv = conn.recv(server_conf['rec_mes'])
