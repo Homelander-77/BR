@@ -39,7 +39,7 @@ class Server:
             self._close_all()
 
     def request_shutdown(self):
-        print("Shutdown requests")
+        print(" Shutdown requests")
         self.stop = True
 
     def _close_all(self):

@@ -3,6 +3,8 @@ from difflib import SequenceMatcher
 import re
 import cracklib
 
+from .config import path_conf
+
 # Steps:
 # 1. 8 chars
 # 2. small and big letters, special symbols
@@ -31,7 +33,7 @@ def validate_by_similarity(firstname: str, lastname: str, mail: str, password: s
 
 
 def validate_by_common_list(password: str):
-    path = '/var/data/common_passwords.txt'
+    path = path_conf['common_passwords']
     max_similatiry = 0.7
 
     with open(path, 'r') as f:
