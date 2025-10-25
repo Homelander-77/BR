@@ -44,25 +44,35 @@ declare
     user_id integer;
 begin
     begin
-        INSERT INTO users (firstname, lastname)
-        VALUES (in_firstname, in_lastname)
-        RETURNING id INTO user_id;
+        insert into users (firstname, lastname)
+        values (in_firstname, in_lastname)
+        returning id into user_id;
 
-        INSERT INTO login_password (user_id, login, password)
-        VALUES (user_id, in_login, in_password);
+        insert into login_password (user_id, login, password, salt)
+        values (user_id, in_login, in_password, in_salt);
 			
-		INSERT INTO salt (user_id, salt)
-        VALUES (user_id, in_salt);
-		
-		INSERT INTO cookie(user_id, cookie, expire)
-		VALUES (user_id, in_cookie, in_expire);		
+		insert into cookie(user_id, cookie, expire)
+		values (user_id, in_cookie, in_expire);		
 
-        return TRUE; 
+        return true; 
 
     exception when others then
         raise notice 'Error: %', SQLERRM;
         return FALSE; 
     end;
+end;
+$$ language plpgsql;
+
+
+-- check of login existing
+create or replace function check_user_existing(in_login varchar(64))
+returns boolean
+as $$
+begin
+	if exists (select login from login_password where login=in_login) then 
+		return false;
+	end if;
+	return true;
 end;
 $$ language plpgsql;
 
