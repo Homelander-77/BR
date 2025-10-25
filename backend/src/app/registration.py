@@ -11,15 +11,15 @@ from postgres import Database
 def reg(request):
     pg = Database()
     firstname, lastname = request.body["firstname"], request.body["lastname"]
-    mail, password = request.body["login"], request.body["password"]
-    ans = check(firstname, lastname, mail, password)
-    if sum(ans.values()) == 4:
+    login, password = request.body["login"], request.body["password"]
+    ans = check(firstname, lastname, login, password)
+    if pg.execute_func("check_user_existing", login):
+        return MakeHTTPResponse(http.HTTPStatus.CONFLICT, json.dumps(ans)).make(cookie={})
+    if sum(ans.values()) == 5:
         salt = generate_salt()
         password = salt_password(password, salt)
         cookie = cookie_create()
-        pg.execute_func("add_user", firstname, lastname, mail, password, \
+        pg.execute_func("add_user", firstname, lastname, login, password, \
                         salt, cookie['id'], cookie['expire'])
-        response = MakeHTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
-        return response
-    response = MakeHTTPResponse(http.HTTPStatus.UNAUTHORIZED, json.dumps(ans)).make(cookie={})
-    return response
+        return MakeHTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
+    return MakeHTTPResponse(http.HTTPStatus.UNAUTHORIZED, json.dumps(ans)).make(cookie={})
