@@ -15,6 +15,11 @@ db_conf = dict(
     port=int(os.getenv("DB_PORT", 5432)),
     )
 
+redis_conf = dict(
+    host=str(os.getenv("REDIS_HOST")),
+    port=str(os.getenv("REDIS_PORT")),
+    )
+
 path_conf = dict(
     common_passwords='/var/data/common_passwords.txt',
     )

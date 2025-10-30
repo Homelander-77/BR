@@ -2,14 +2,7 @@ import psycopg2
 import threading
 
 from config import db_conf
-
-
-def lazy_start(method):
-    def wrapper(self, *args, **kwargs):
-        if self.conn is None:
-            self.connect()
-        return method(self, *args, **kwargs)
-    return wrapper
+from lazy_start import lazy_start
 
 
 class Database:
