@@ -6,6 +6,7 @@ from utils.salt import salt_password, generate_salt
 from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create
 from postgres import Database
+import redis
 
 
 def reg(request):
@@ -19,7 +20,7 @@ def reg(request):
         salt = generate_salt()
         password = salt_password(password, salt)
         cookie = cookie_create()
-        pg.execute_func("add_user", firstname, lastname, login, password, \
-                        salt, cookie['id'], cookie['expire'])
+        user_id = pg.execute_func("add_user", firstname, lastname, login, password)
+        redis.set_key_value({"user_id": user_id, "cookie": cookie})
         return HTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
     return HTTPResponse(http.HTTPStatus.UNAUTHORIZED, json.dumps(ans)).make(cookie={})

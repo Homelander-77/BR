@@ -26,17 +26,16 @@ class Redis:
             decode_responses=True)
 
     @lazy_start
-    def set_key_value(self, **data):
+    def set_key_value(self, **kwargs):
+        data = dict()
+        for name, value in kwargs:
+            data[name] = value
+
         if data['session_id']:
-            mapping = {k: v for k, v in data.items() if k != 'session_id'}
-            self.redis.hset(name=data['session_id'], mapping=mapping)
+            pass
         else:
             session_id = str(uuid.uuid4())
-            mapping = {
-                "user_id": f"user:{data['user_id']}:session",
-                "cookie": data['cookie']
-                }
-            self.redis.hset(name=session_id, mapping=mapping)
+            self.redis.hset(name=data[''])
 
     @lazy_start
     def get_values(self, cookie):
