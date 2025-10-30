@@ -4,8 +4,8 @@ import http
 import signal
 
 from app.config import server_conf
-from utils.response import MakeHTTPResponse
-from utils.HTTPRequest import ParseHTTPRequest
+from utils.HTTPResponse import HTTPResponse
+from utils.HTTPRequest import HTTPRequest
 
 
 class Server:
@@ -75,8 +75,7 @@ class Server:
             if request.path in self.paths.keys():
                 response = self.paths[request.path](request)
             else:
-                makeResponse = MakeHTTPResponse(http.HTTPStatus.NOT_FOUND, '')
-                response = makeResponse.make(cookie=False)
+                response = HTTPResponse(http.HTTPStatus.NOT_FOUND, '').make(cookie=False)
 
             print(response.decode())
             while response:

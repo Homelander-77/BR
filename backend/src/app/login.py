@@ -1,7 +1,7 @@
 import json
 import http
 
-from utils.response import MakeHTTPResponse
+from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create
 from utils.salt import salt_password
 from postgres import Database
@@ -26,12 +26,12 @@ def login(request):
         pg = Database()
         ans = json.dumps({"success": True})
         cookie = cookie_create()
-        response = MakeHTTPResponse(http.HTTPStatus.OK, ans).make(cookie=cookie)
+        response = HTTPResponse(http.HTTPStatus.OK, ans).make(cookie=cookie)
         pg.execute_func("set_cookie", in_login, cookie)
         print('{"success": true}')
         return response
     else:
         ans = json.dumps({"success": False})
-        response = MakeHTTPResponse(http.HTTPStatus.UNAUTHORIZED, ans).make()
+        response = HTTPResponse(http.HTTPStatus.UNAUTHORIZED, ans).make()
         print('{"success": false}')
         return response
