@@ -14,3 +14,7 @@ db_conf = dict(
     host=str(os.getenv("DB_HOST")),
     port=int(os.getenv("DB_PORT", 5432)),
     )
+
+path_conf = dict(
+    common_passwords='/var/data/common_passwords.txt',
+    )

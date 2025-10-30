@@ -3,7 +3,7 @@ from difflib import SequenceMatcher
 import re
 import cracklib
 
-from .config import path_conf
+from config import path_conf
 
 # Steps:
 # 1. between 8 and 96 chars, login also from 1 to 64

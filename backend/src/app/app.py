@@ -2,7 +2,7 @@ import sys
 
 from server import Server
 from postgres import Database
-from app.config import server_conf
+from config import server_conf
 from app.login import login
 from app.registration import reg
 from app.cookie_check import cookie_check

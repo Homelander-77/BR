@@ -3,7 +3,7 @@ import select
 import http
 import signal
 
-from app.config import server_conf
+from config import server_conf
 from utils.HTTPResponse import HTTPResponse
 from utils.HTTPRequest import HTTPRequest
 

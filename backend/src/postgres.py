@@ -1,7 +1,7 @@
 import psycopg2
 import threading
 
-from app.config import db_conf
+from config import db_conf
 
 
 def lazy_start(method):
@@ -28,7 +28,7 @@ class Database:
 
     def connect(self):
         self.conn = psycopg2.connect(
-            dbname=db_conf['db_name'],
+            dbname=db_conf['name'],
             user=db_conf['user'],
             password=db_conf['password'],
             host=db_conf['host'],
