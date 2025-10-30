@@ -1,9 +1,13 @@
-docker run --rm --name postgres --network net -d -v hs4:/var/lib/postgresql/data \
+docker run --rm --name postgres --network net -d -v postrges-data:/var/lib/postgresql/data \
 -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
 -e POSTGRES_PORT=$POSTGRES_PORT \
 -e POSTGRES_DB=$POSTGRES_DB \
 -e POSTGRES_USER=$POSTGRES_USER \
 postgres:1.0;
+
+docker run --rm --name redis --network net -d -v redis-data:/data \
+redis:1.0 redis-server --save 60 1;
+
 docker run --rm -dit --name server --network net \
 -e SERVER_HOST=0.0.0.0 \
 -e SERVER_PORT=8080 \
