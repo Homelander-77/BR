@@ -5,7 +5,7 @@ import signal
 
 from app.config import server_conf
 from utils.response import MakeHTTPResponse
-from utils.ParseHTTPRequest import ParseHTTPRequest
+from utils.HTTPRequest import ParseHTTPRequest
 
 
 class Server:
