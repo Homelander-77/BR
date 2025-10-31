@@ -1,4 +1,4 @@
-class MakeHTTPResponse:
+class HTTPResponse:
     def __init__(self, status, json):
         self.status = int(status)
         self.json = json

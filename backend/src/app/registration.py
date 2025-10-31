@@ -3,20 +3,24 @@ import http
 
 from utils.password_check import check
 from utils.salt import salt_password, generate_salt
-from utils.response import MakeHTTPResponse
+from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create
+from postgres import Database
+import redis
 
 
-def reg(request, database):
+def reg(request):
+    pg = Database()
     firstname, lastname = request.body["firstname"], request.body["lastname"]
-    mail, password = request.body["login"], request.body["password"]
-    ans = check(firstname, lastname, mail, password)
-    if sum(ans.values()) == 4:
+    login, password = request.body["login"], request.body["password"]
+    ans = check(firstname, lastname, login, password)
+    if pg.execute_func("check_user_existing", login):
+        return HTTPResponse(http.HTTPStatus.CONFLICT, json.dumps(ans)).make(cookie={})
+    if sum(ans.values()) == 5:
         salt = generate_salt()
         password = salt_password(password, salt)
         cookie = cookie_create()
-        database.add_user(firstname, lastname, mail, password, salt, cookie)
-        response = MakeHTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
-        return response
-    response = MakeHTTPResponse(http.HTTPStatus.NOT_FOUND, json.dumps(ans)).make(cookie={})
-    return response
+        user_id = pg.execute_func("add_user", firstname, lastname, login, password)
+        redis.set_key_value({"user_id": user_id, "cookie": cookie})
+        return HTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
+    return HTTPResponse(http.HTTPStatus.UNAUTHORIZED, json.dumps(ans)).make(cookie={})

@@ -3,21 +3,21 @@ from difflib import SequenceMatcher
 import re
 import cracklib
 
+from config import path_conf
+
 # Steps:
-# 1. 8 chars
+# 1. between 8 and 96 chars, login also from 1 to 64
 # 2. small and big letters, special symbols
 # 3. easy information or phrases in password
 # 4. Validation for use as password in other fields, checking on server
 
 
-def validate_by_len_symbols(password: str):
+def validate_by_len_and_symbols(login: str, password: str):
+    lens = {"password": 8 <= password < 96, "login": 6 <= login < 64}
     pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*#?&/])[A-Za-z\d@$!%*#?&./]{8,}$'
-
     if re.fullmatch(pattern, password):
-        return True, True
-    elif len(password) >= 8:
-        return True, False
-    return False, False
+        return lens["login"], lens["password"], True
+    return lens["login"], lens["password"], False
 
 
 def validate_by_similarity(firstname: str, lastname: str, mail: str, password: str):
@@ -31,7 +31,7 @@ def validate_by_similarity(firstname: str, lastname: str, mail: str, password: s
 
 
 def validate_by_common_list(password: str):
-    path = '/var/data/common_passwords.txt'
+    path = path_conf['common_passwords']
     max_similatiry = 0.7
 
     with open(path, 'r') as f:
@@ -58,9 +58,10 @@ def validate_by_common_combination(password):
         return False
 
 
-def check(firstname: str, lastname: str, mail: str, password: str):
-    length, symbols = validate_by_len_symbols(password)
-    sim = validate_by_similarity(firstname, lastname, mail, password)
+def check(firstname: str, lastname: str, login: str, password: str):
+    len_password, len_login, symbols = validate_by_len_and_symbols(login, password)
+    sim = validate_by_similarity(firstname, lastname, login, password)
     common = validate_by_common_combination(password)
 
-    return {"length": length, "symbols": symbols, "sim": sim, "common": common}
+    return {"len_password": len_password, "len_login": len_login, \
+            "symbols": symbols, "sim": sim, "common": common}

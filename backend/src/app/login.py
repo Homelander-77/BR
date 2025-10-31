@@ -1,34 +1,38 @@
 import json
 import http
 
-from utils.response import MakeHTTPResponse
+from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create
 from utils.salt import salt_password
+from postgres import Database
+import redis_server
 
 
-def verify_password(input_login, input_password, database):
-    password = database.get_password_by_login(input_login)
-    print(input_login, input_password, database)
+def verify_password(input_login, input_password):
+    pg = Database()
+    password = pg.execute_func("get_password_by_login", input_login)
+    print(input_login, input_password)
     if password:
-        input_salt = database.get_salt_by_login(input_login)
+        input_salt = pg.execute_func("get_salt_by_login", login)
         input_hash = salt_password(input_password, input_salt)
-        return input_hash == password
+        return pg.execute_func("get_user_id_by_login", input_login) if input_hash == password else 0
     else:
-        return False
+        return 0
 
 
-def login(request, database):
+def login(request):
     print(request.body)
     in_login, in_password = request.body["login"], request.body["password"]
-    if verify_password(in_login, in_password, database):
+    user_id = verify_password(in_login, in_password)
+    if user_id:
         ans = json.dumps({"success": True})
         cookie = cookie_create()
-        response = MakeHTTPResponse(http.HTTPStatus.OK, ans).make(cookie=cookie)
-        database.add_cookie(in_login, cookie)
+        response = HTTPResponse(http.HTTPStatus.OK, ans).make(cookie=cookie)
+        redis_server.set_key_value({"user_id": user_id, "cookie": cookie})
         print('{"success": true}')
         return response
     else:
         ans = json.dumps({"success": False})
-        response = MakeHTTPResponse(http.HTTPStatus.UNAUTHORIZED, ans).make()
+        response = HTTPResponse(http.HTTPStatus.UNAUTHORIZED, ans).make()
         print('{"success": false}')
         return response

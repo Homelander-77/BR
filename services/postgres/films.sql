@@ -22,7 +22,7 @@ values ('Interstellar', '/images/interstellar.jpg', 2014,
 
 -- function for getting list of films
 create or replace function get_recommendations()
-returns jsonb as $$
+returns json as $$
 begin
 	return (
 		select json_agg(row_to_json(f))
