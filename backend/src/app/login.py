@@ -1,11 +1,32 @@
 import json
 import http
+from datetime import datetime
 
 from utils.HTTPResponse import HTTPResponse
-from utils.cookie_create import cookie_create
+from utils.cookie_create import cookie_create, create_expire
 from utils.salt import salt_password
 from postgres import Database
-import redis_server
+from redis_server import Redis
+
+time_sample = "%a, %d %b %Y %H:%M:%S GMT"
+
+
+def check_auth(request):
+    redis = Redis()
+    if 'Cookie' in request.headers:
+        session_id = str(dict([tuple(i.split('=')) for i in request.headers['Cookie'].split('; ')])['session_id'])
+        expire = redis.get_values(session_id, "expire")
+        if expire:
+            expire = datetime.strptime(expire, time_sample)
+            if datetime.utcnow() < expire:
+                new_expire = create_expire()
+                redis.set_key_value({
+                    "session_id": session_id,
+                    "expire": new_expire})
+                return HTTPResponse(http.HTTPStatus.OK, '').make(cookie={
+                    "session_id": session_id,
+                    "expire": new_expire})
+    return HTTPResponse(http.HTTPStatus.FORBIDDEN, '').make()
 
 
 def verify_password(input_login, input_password):
@@ -22,13 +43,17 @@ def verify_password(input_login, input_password):
 
 def login(request):
     print(request.body)
+    redis = Redis()
     in_login, in_password = request.body["login"], request.body["password"]
     user_id = verify_password(in_login, in_password)
     if user_id:
         ans = json.dumps({"success": True})
         cookie = cookie_create()
         response = HTTPResponse(http.HTTPStatus.OK, ans).make(cookie=cookie)
-        redis_server.set_key_value({"user_id": user_id, "cookie": cookie})
+        redis.set_key_value({
+            "session_id": cookie['session_id'],
+            "user_id": user_id,
+            "expire": cookie['expire']})
         print('{"success": true}')
         return response
     else:

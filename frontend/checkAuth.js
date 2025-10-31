@@ -1,5 +1,5 @@
 export async function check(){
-    return fetch('/api/cookie', {
+    return fetch('/api/check_auth', {
 	method: 'GET',
 	credentials: 'include',
 	headers: { 'Content-Type': 'application/json' }
