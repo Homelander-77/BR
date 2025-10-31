@@ -6,7 +6,7 @@ from utils.salt import salt_password, generate_salt
 from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create
 from postgres import Database
-import redis
+from redis_server import Redis
 
 
 def reg(request):
@@ -15,12 +15,23 @@ def reg(request):
     login, password = request.body["login"], request.body["password"]
     ans = check(firstname, lastname, login, password)
     if pg.execute_func("check_user_existing", login):
-        return HTTPResponse(http.HTTPStatus.CONFLICT, json.dumps(ans)).make(cookie={})
+        return (HTTPResponse(http.HTTPStatus.CONFLICT,
+                             json.dumps(ans))
+                .make(cookie={}))
     if sum(ans.values()) == 5:
+        redis = Redis()
         salt = generate_salt()
         password = salt_password(password, salt)
         cookie = cookie_create()
-        user_id = pg.execute_func("add_user", firstname, lastname, login, password)
-        redis.set_key_value({"user_id": user_id, "cookie": cookie})
-        return HTTPResponse(http.HTTPStatus.OK, json.dumps(ans)).make(cookie=cookie)
-    return HTTPResponse(http.HTTPStatus.UNAUTHORIZED, json.dumps(ans)).make(cookie={})
+        user_id = pg.execute_func(
+            "add_user", firstname, lastname, login, password)
+        redis.set_key_value({
+            "session_id": cookie['session_id'],
+            "user_id": user_id,
+            "expire": cookie['expire']})
+        return (HTTPResponse(http.HTTPStatus.OK,
+                             json.dumps(ans))
+                .make(cookie=cookie))
+    return (HTTPResponse(http.HTTPStatus.UNAUTHORIZED,
+                         json.dumps(ans))
+            .make(cookie={}))

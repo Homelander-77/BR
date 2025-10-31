@@ -148,11 +148,12 @@ function reg() {
 			      password: password})
     })
 	    .then(res => {
-		if (res.status === 400) {
-		    edit_common();
-		    alert("Bad Request: Please check your input and try again.");
-		} else if (res.status === 200) {
+		if (res.status === 200){
 		    window.location.href = '/';
+		} else if (res.status === 409) {
+		  showNotification("User already exists");  
+		} else if (res.status === 400) {
+		    edit_common();		    
 		} else {
 		    alert("Unexpected server response.");
                     throw new Error('Unexpected status: ' + res.status);

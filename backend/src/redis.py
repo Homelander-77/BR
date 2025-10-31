@@ -25,10 +25,10 @@ class Redis:
             decode_responses=True)
 
     @lazy_start
-    def set_key_value(self, **data):
+    def set_key_value(self, **data) -> None:
         mapping = {k: v for k, v in data.items() if k != 'session_id'}
         self.redis.hset(name=data['session_id'], mapping=mapping)
 
     @lazy_start
-    def get_value(self, name, value):
+    def get_value(self, name, value) -> str:
         return str(self.redis.hget(name, value).decode())
