@@ -3,3 +3,4 @@ backend/__pycache__/
 git_load.sh
 test/
 services/nginx/cert/*
+!service/nginx/cert/.gitignore
