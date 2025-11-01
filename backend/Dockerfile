@@ -12,7 +12,7 @@ RUN apt-get update -o Acquire::Retries=5 -o Acquire::http::Timeout="30" \
 RUN python -m pip install --upgrade pip
 RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple \
     --default-timeout=100 \
-    psycopg2-binary python-dotenv cracklib
+    psycopg2-binary python-dotenv cracklib redis
 
 
 COPY src/  /server/
