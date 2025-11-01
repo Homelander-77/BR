@@ -1,7 +1,7 @@
 import json
 
 
-class ParseHTTPRequest:
+class HTTPRequest:
     def __init__(self, raw_request: str):
         self.raw_request = raw_request.strip()
         self.headers = {}
