@@ -1,6 +1,5 @@
 backend/__pycache__/
 .todo
-services/cert/*
 git_load.sh
 test/
-services/nginx/cert/
+services/nginx/cert/*
