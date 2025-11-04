@@ -1,7 +1,7 @@
 import sys
 
 from server import Server
-from postgres import Database
+from database import Database
 from config import server_conf
 from app.login import login, check_auth
 from app.registration import reg

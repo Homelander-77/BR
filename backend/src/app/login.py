@@ -5,8 +5,8 @@ from datetime import datetime
 from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create, create_expire
 from utils.salt import salt_password
-from postgres import Database
-from redis_server import Redis
+from database import Database
+from session_store import Redis
 
 time_sample = "%a, %d %b %Y %H:%M:%S GMT"
 
