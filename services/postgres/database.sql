@@ -28,20 +28,18 @@ as $$
 declare
     user_id integer;
 begin
-    begin
-        insert into users (firstname, lastname)
-        values (in_firstname, in_lastname)
-        returning id into user_id;
+	insert into users (firstname, lastname)
+	values (in_firstname, in_lastname)
+	returning id into user_id;
 
-        insert into login_password (user_id, login, password, salt)
-        values (user_id, in_login, in_password, in_salt);
-			
-        return user_id; 
+	insert into login_password (user_id, login, password, salt)
+       	values (user_id, in_login, in_password, in_salt);
 
-    exception when others then
-        raise notice 'Error: %', SQLERRM;
-        return 0; 
-    end;
+       	return user_id; 
+
+       	exception when others then
+		  raise notice 'Error: %', SQLERRM;
+      	return 0; 
 end;
 $$ language plpgsql;
 

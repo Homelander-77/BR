@@ -4,3 +4,4 @@ git_load.sh
 test/
 services/nginx/cert/*
 !services/nginx/cert/.gitkeep
+git_push.sh
