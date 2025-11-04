@@ -1,18 +1,18 @@
 -- Creating table with users, id - primary key
 create table users (
-	id serial primary key,
+	uid serial primary key,
 	firstname varchar(32) not null,
 	lastname varchar(32) not null );
 
 
 
 -- Creating table with login and password
-create table login_password (
-	user_id integer primary key,
+create table credentials (
+	uid integer primary key,
 	login varchar(64) not null unique,
 	password varchar(96) not null,
 	salt varchar(32) not null,
-	foreign key (user_id) references users (id) on delete cascade );
+	foreign key (uid) references users (id) on delete cascade );
 
 
 -- function for adding user
@@ -32,14 +32,10 @@ begin
 	values (in_firstname, in_lastname)
 	returning id into user_id;
 
-	insert into login_password (user_id, login, password, salt)
+	insert into credentials (uid, login, password, salt)
        	values (user_id, in_login, in_password, in_salt);
 
        	return user_id; 
-
-       	exception when others then
-		  raise notice 'Error: %', SQLERRM;
-      	return 0; 
 end;
 $$ language plpgsql;
 
@@ -49,7 +45,7 @@ create or replace function check_user_existing(in_login varchar(64))
 returns boolean
 as $$
 begin
-	if exists (select login from login_password where login=in_login) then 
+	if exists (select login from credentials where login=in_login) then 
 		return false;
 	end if;
 	return true;
@@ -64,8 +60,8 @@ as $$
 declare
 	password varchar(64);
 begin
-	select lp.password into password from login_password lp 
-	where lp.login=in_login;
+	select c.password into password from credentials c 
+	where c.login=in_login;
 	
 	return password;
 end;
@@ -79,8 +75,8 @@ as $$
 declare
 	salt varchar(64);
 begin
-	select lp.salt into salt from login_password lp
-	where lp.login=in_login;	
+	select c.salt into salt from credentials c
+	where c.login=in_login;	
 	return salt;
 end;
 $$ language plpgsql;
@@ -93,11 +89,11 @@ as $$
 declare
 	id int4;
 begin
-	select user_id into id from login_password where login=in_login;
-	if id > 0 then
-		return id;
-	else 
+	select uid into id from credentials c where c.login=in_login;
+	if id is NULL then
 		return 0;
+	else 
+		return id;
 	end if; 
 end;
 $$ language plpgsql;
