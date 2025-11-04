@@ -2,7 +2,9 @@
 create table users (
 	uid serial primary key,
 	firstname varchar(32) not null,
-	lastname varchar(32) not null );
+	lastname varchar(32) not null,
+	created time default current_time,
+	deleted time default NULL);
 
 
 
@@ -12,7 +14,7 @@ create table credentials (
 	login varchar(64) not null unique,
 	password varchar(96) not null,
 	salt varchar(32) not null,
-	foreign key (uid) references users (id) on delete cascade );
+	foreign key (uid) references users (uid) on delete cascade );
 
 
 -- function for adding user
