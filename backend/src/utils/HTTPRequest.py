@@ -36,4 +36,4 @@ class HTTPRequest:
                 self.headers[key.strip()] = value.strip()
 
     def __repr__(self):
-        return f"HTTPRequest(method='{self.method}', path='{self.path}', headers={len(self.headers)} items)"
+        return f"ParseHTTPRequest(method='{self.method}', path='{self.path}', headers={len(self.headers)} items)"

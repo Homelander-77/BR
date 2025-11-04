@@ -1,9 +1,14 @@
 import uuid
 from datetime import datetime, timedelta
 
+time_sample = "%a, %d %b %Y %H:%M:%S GMT"
+
+
+def create_expire():
+    return (datetime.utcnow() + timedelta(days=7)).strftime(time_sample)
+
 
 def cookie_create():
-    time_sample = "%a, %d %b %Y %H:%M:%S GMT"
-    cookie_id = str(uuid.uuid4())
-    expire = (datetime.utcnow() + timedelta(days=7)).strftime(time_sample)
-    return {'id': cookie_id, 'expire': expire}
+    session_id = str(uuid.uuid4())
+    expire = create_expire()
+    return {'session_id': session_id, 'expire': expire}

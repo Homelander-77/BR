@@ -1,4 +1,4 @@
-class MakeHTTPResponse:
+class HTTPResponse:
     def __init__(self, status, json):
         self.status = int(status)
         self.json = json
@@ -16,7 +16,7 @@ class MakeHTTPResponse:
         addInfo = f'{self.content_type}; {self.charset}'
         response = f'{header}\r\n{addInfo}\r\n{self.contentLength}\r\n\r\n{self.json}'
         if cookie:
-            cookie_header = f"Set-Cookie: id={cookie['id']}; Expires={cookie['expire']}; Path=/; HttpOnly"
+            cookie_header = f"Set-Cookie: session_id={cookie['session_id']}; expires={cookie['expire']}; HttpOnly; Secure; Path=/"
             response = f'{header}\r\n{addInfo}\r\n{self.contentLength}\r\n{cookie_header}\r\n\r\n{self.json}'
 
         return response.encode()

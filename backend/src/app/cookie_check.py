@@ -1,16 +1,18 @@
 import http
 
 from datetime import datetime
-from utils.response import MakeHTTPResponse
+from utils.HTTPResponse import HTTPResponse
+from postgres import Database
 
 
-def cookie_check(request, database):
+def cookie_check(request):
+    pg = Database()
     time_sample = "%a, %d %b %Y %H:%M:%S GMT"
     if 'Cookie' in request.headers:
         cookie = str(dict([tuple(i.split('=')) for i in request.headers['Cookie'].split('; ')])['id'])
-        time = database.get_cookie_expire(cookie)
+        time = pg.execute_func("get_cookie_expire", cookie)
         if time:
             expire = datetime.strptime(time, time_sample)
             if datetime.utcnow() < expire:
-                return MakeHTTPResponse(http.HTTPStatus.OK, '').make()
-    return MakeHTTPResponse(http.HTTPStatus.FORBIDDEN, '').make()
+                return HTTPResponse(http.HTTPStatus.OK, '').make()
+    return HTTPResponse(http.HTTPStatus.FORBIDDEN, '').make()

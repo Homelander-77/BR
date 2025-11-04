@@ -1,4 +1,4 @@
-import { check } from "./cookieCheck.js";
+import { check } from "./checkAuth.js";
 
 window.addEventListener('load', function() {
     check().then(ans => {
@@ -70,7 +70,7 @@ function similarity(password, firstName, lastName, email) {
 }
 
 function len(password) {
-    return password.length >= 8;
+    return password.length >= 8 && password.length < 96;
 }
 
 function specialSymbolsDigestsLetters(password) { 
@@ -91,7 +91,7 @@ function coincidence(password, firstName, lastName, email){
     }
 }
 
-function editConditions(){
+function checkPassword(){
     const [password, firstName, lastName, email] = getData();
     
     if (len(password)) {
@@ -119,13 +119,20 @@ function editConditions(){
     }
 }
 
-function checkPassword() {
-    editConditions();
-}
-
 function edit_common() {
     commonIcon.style = 'none';    
 }
+
+function showNotification(message) {
+  const notif = document.getElementById('notification');
+  notif.textContent = message;
+  notif.classList.add('show');
+
+  setTimeout(() => {
+    notif.classList.remove('show');
+  }, 5000);
+}
+
 
 function reg() {    
     const [password, firstName, lastName, email] = getData();
@@ -141,11 +148,12 @@ function reg() {
 			      password: password})
     })
 	    .then(res => {
-		if (res.status === 400) {
-		    edit_common();
-		    alert("Bad Request: Please check your input and try again.");
-		} else if (res.status === 200) {
+		if (res.status === 200){
 		    window.location.href = '/';
+		} else if (res.status === 409) {
+		  showNotification("User already exists");  
+		} else if (res.status === 400) {
+		    edit_common();		    
 		} else {
 		    alert("Unexpected server response.");
                     throw new Error('Unexpected status: ' + res.status);
@@ -155,5 +163,8 @@ function reg() {
 		console.error('Fetch error:', error);
 		alert("Network error or bad response");
 	    });
+    } else {
+	
+	
     }
 }

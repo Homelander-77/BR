@@ -1,10 +1,11 @@
 import http
-import json
 
-from utils.response import MakeHTTPResponse
+from utils.HTTPResponse import HTTPResponse
+from postgres import Database
 
 
-def rec(request, database):
-    ans = json.dumps(database.get_rec())
-    response = MakeHTTPResponse(http.HTTPStatus.OK, ans).make()
+def rec(request):
+    pg = Database()
+    ans = dict(pg.execute_func('get_recommendations', ())[0][0])
+    response = HTTPResponse(http.HTTPStatus.OK, ans).make()
     return response

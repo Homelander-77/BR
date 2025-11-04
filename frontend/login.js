@@ -1,4 +1,4 @@
-import { check } from "./cookieCheck.js";
+import { check } from "./checkAuth.js";
 
 window.addEventListener('load', async function(){
     check().then(ans => {

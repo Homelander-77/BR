@@ -131,59 +131,80 @@
         .hidden {
             display: none;
         }
+	.notification {
+	    position: fixed;
+	    top: -60px;
+	    left: 50%;
+	    transform: translateX(-50%);
+	    background: #333;
+	    color: white;
+	    padding: 12px 24px;
+	    border-radius: 8px;
+	    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+	    opacity: 0;
+	    transition: all 0.6s ease;
+	    z-index: 9999;
+	}
+
+	.notification.show {
+	    top: 20px;
+	    opacity: 1;
+	}
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Создать аккаунт</h1>
-        
-        <form id="registrationForm">
-            <div class="form-group">
-                <label for="firstName">Имя</label>
-                <input type="text" id="firstName" name="firstName" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="lastName">Фамилия</label>
-                <input type="text" id="lastName" name="lastName" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="email">Email (логин)</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Пароль</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            
-            <button type="submit">Зарегистрироваться</button>
-        </form>
-        
-        <div class="password-check" id="passwordCheck">
-            <h3>Требования к паролю:</h3>
-            <ul>
-                <li class="requirement">
-                    <i id="lengthIcon" class="invalid">✗</i>
-                    <span id="lengthText">Не менее 8 символов</span>
-                </li>
-                <li class="requirement">
-                    <i id="caseIcon" class="invalid">✗</i>
-                    <span id="caseText">Содержит заглавные и строчные буквы, а также специальные символы</span>
-                </li>
-                <li class="requirement" id="sim">
-                    <i id="simIcon" class="invalid">✗</i>
-                    <span id="simText">Не совпадает информация с другими строками</span>
-                </li>
-		<li class="hidden" id='common'>
-                    <i id="commonIcon" class="invalid">✗</i>
-                    <span id="commonText">Не легкое слово или фраза</span>
-                </li>
+  <div id="notification" class="notification"></div>
 
-            </ul>
-        </div>
+  <div class="container">
+    <h1>Создать аккаунт</h1>
+    
+    <form id="registrationForm">
+      <div class="form-group">
+        <label for="firstName">Имя</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="lastName">Фамилия</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email (логин)</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      
+      <button type="submit">Зарегистрироваться</button>
+    </form>
+    
+    <div class="password-check" id="passwordCheck">
+      <h3>Требования к паролю:</h3>
+      <ul>
+        <li class="requirement">
+          <i id="lengthIcon" class="invalid">✗</i>
+          <span id="lengthText">Не менее 8 символов</span>
+        </li>
+        <li class="requirement">
+          <i id="caseIcon" class="invalid">✗</i>
+          <span id="caseText">Содержит заглавные и строчные буквы, а также специальные символы</span>
+        </li>
+        <li class="requirement" id="sim">
+          <i id="simIcon" class="invalid">✗</i>
+          <span id="simText">Не совпадает информация с другими строками</span>
+        </li>
+	<li class="hidden" id='common'>
+          <i id="commonIcon" class="invalid">✗</i>
+          <span id="commonText">Не легкое слово или фраза</span>
+        </li>
+
+      </ul>
     </div>
+  </div>
 <script type="module" src="./reg.js?2"></script>
 </body>
 </html>
