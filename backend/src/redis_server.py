@@ -1,6 +1,5 @@
 import threading
 import redis
-import uuid
 
 from lazy_start import lazy_start
 from config import redis_conf
@@ -26,17 +25,10 @@ class Redis:
             decode_responses=True)
 
     @lazy_start
-    def set_key_value(self, **kwargs):
-        data = dict()
-        for name, value in kwargs:
-            data[name] = value
-
-        if data['session_id']:
-            pass
-        else:
-            session_id = str(uuid.uuid4())
-            self.redis.hset(name=data[''])
+    def set_key_value(self, **data) -> None:
+        mapping = {k: v for k, v in data.items() if k != 'session_id'}
+        self.redis.hset(name=data['session_id'], mapping=mapping)
 
     @lazy_start
-    def get_values(self, cookie):
-        pass
+    def get_value(self, name, value) -> str:
+        return str(self.redis.hget(name, value).decode())

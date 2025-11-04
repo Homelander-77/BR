@@ -47,7 +47,10 @@ create or replace function check_user_existing(in_login varchar(64))
 returns boolean
 as $$
 begin
-	if exists (select login from credentials where login=in_login) then 
+	if exists (select login
+	   	   from credentials
+		    where login=in_login
+		  ) then 
 		return false;
 	end if;
 	return true;
@@ -62,7 +65,8 @@ as $$
 declare
 	password varchar(64);
 begin
-	select c.password into password from credentials c 
+	select c.password into password 
+	from credentials c 
 	where c.login=in_login;
 	
 	return password;
@@ -91,7 +95,10 @@ as $$
 declare
 	id int4;
 begin
-	select uid into id from credentials c where c.login=in_login;
+	select uid into id from 
+	credentials c 
+	where c.login=in_login;
+
 	if id is NULL then
 		return 0;
 	else 
