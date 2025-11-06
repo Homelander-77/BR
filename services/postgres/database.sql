@@ -44,16 +44,13 @@ $$ language plpgsql;
 
 -- check of login existing
 create or replace function check_user_existing(in_login varchar(64))
-returns boolean
-as $$
+returns boolean as $$
 begin
-	if exists (select login
-	   	   from credentials
-		    where login=in_login
-		  ) then 
-		return false;
-	end if;
-	return true;
+    return exists (
+        select 1
+        from credentials
+        where trin(login) = trim(in_login)
+    );
 end;
 $$ language plpgsql;
 

@@ -3,8 +3,10 @@ class HTTPResponse:
         self.status = int(status)
         self.json = json
 
-        self.statusResponse = {200: 'OK', 201: 'Created', 204: 'No content', \
-            400: 'Bad Request', 401: 'Unauthorized', 403: 'Forbidden', 404: 'Not found', 429: 'Too Many Requests'}
+        self.statusResponse = {
+            200: 'OK', 201: 'Created', 204: 'No content',
+            400: 'Bad Request', 401: 'Unauthorized', 403: 'Forbidden',
+            404: 'Not found', 429: 'Too Many Requests', 409: 'Conflict'}
         self.httpVersion = 'HTTP/1.1'
         self.content_type = 'Content-Type: application/json'
         self.charset = 'сharset=utf-8'
