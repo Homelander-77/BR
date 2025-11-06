@@ -7,7 +7,7 @@ from config import redis_conf
 
 class Redis:
     __instance = None
-    _lock = threading.lock()
+    _lock = threading.Lock()
 
     def __new__(cls):
         with cls._lock:

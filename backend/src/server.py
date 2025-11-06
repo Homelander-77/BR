@@ -25,7 +25,6 @@ class Server:
         print(f"Listening on {self.server_addr}")
 
         while not self.stop:
-            print(self.stop)
             read_sockets, _, _ = select.select(self.sockets_list, [], [], 1)
             for notified_socket in read_sockets:
                 if notified_socket == self.lsock:

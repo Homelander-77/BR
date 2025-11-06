@@ -13,7 +13,7 @@ from config import path_conf
 
 
 def validate_by_len_and_symbols(login: str, password: str):
-    lens = {"password": 8 <= password < 96, "login": 6 <= login < 64}
+    lens = {"password": 8 <= len(password) < 96, "login": 6 <= len(login) < 64}
     pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*#?&/])[A-Za-z\d@$!%*#?&./]{8,}$'
     if re.fullmatch(pattern, password):
         return lens["login"], lens["password"], True
