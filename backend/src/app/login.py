@@ -15,7 +15,7 @@ def check_auth(request):
     redis = Redis()
     if 'Cookie' in request.headers:
         session_id = str(dict([tuple(i.split('=')) for i in request.headers['Cookie'].split('; ')])['session_id'])
-        expire = redis.get_values(session_id, "expire")
+        expire = redis.get_value(session_id, "expire")
         if expire:
             expire = datetime.strptime(expire, time_sample)
             if datetime.utcnow() < expire:

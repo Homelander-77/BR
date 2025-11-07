@@ -16,19 +16,19 @@ class Redis:
             return cls.__instance
 
     def __init__(self):
-        self.redis = None
+        self.conn = None
 
     def connect(self):
-        self.redis = redis.Redis(
+        self.conn = redis.Redis(
             host=redis_conf['host'],
             port=redis_conf['port'],
             decode_responses=True)
 
     @lazy_start
-    def set_key_value(self, **data) -> None:
+    def set_key_value(self, data: dict) -> None:
         mapping = {k: v for k, v in data.items() if k != 'session_id'}
-        self.redis.hset(name=data['session_id'], mapping=mapping)
+        self.conn.hset(name=data['session_id'], mapping=mapping)
 
     @lazy_start
     def get_value(self, name, value) -> str:
-        return str(self.redis.hget(name, value).decode())
+        return str(self.conn.hget(name, value).decode())

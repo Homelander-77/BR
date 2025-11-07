@@ -18,6 +18,8 @@ docker run --rm -dit --name server --network net \
 -e DB_PASSWORD=$POSTGRES_PASSWORD \
 -e DB_HOST=$POSTGRES_HOST \
 -e DB_PORT=$POSTGRES_PORT \
+-e REDIS_PORT=$REDIS_PORT \
+-e REDIS_HOST=$REDIS_HOST \
 server:1.0 \
 & docker run --rm -dit --name nginx --network net \
 -p $NGINX_HTTP_PORT:$NGINX_HTTP_PORT \

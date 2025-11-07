@@ -32,7 +32,7 @@ declare
 begin
 	insert into users (firstname, lastname)
 	values (in_firstname, in_lastname)
-	returning id into user_id;
+	returning uid into user_id;
 
 	insert into credentials (uid, login, password, salt)
        	values (user_id, in_login, in_password, in_salt);
