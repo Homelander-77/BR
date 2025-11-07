@@ -31,4 +31,4 @@ class Redis:
 
     @lazy_start
     def get_value(self, name, value) -> str:
-        return str(self.conn.hget(name, value).decode())
+        return str(self.conn.hget(name, value))

@@ -49,7 +49,7 @@ begin
     return exists (
         select 1
         from credentials
-        where trin(login) = trim(in_login)
+        where trim(login) = trim(in_login)
     );
 end;
 $$ language plpgsql;
