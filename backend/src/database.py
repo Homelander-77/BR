@@ -35,5 +35,8 @@ class Database:
     @lazy_start
     def execute_func(self, func, *args):
         self.cur.callproc(func, args)
-        ans = self.cur.fetchall()[0]
-        return ans if len(ans) > 1 else ans[0]
+        row = self.cur.fetchall()[0]
+        self.conn.commit()
+        if not row:
+            return 0
+        return row[0] if len(row) == 1 else row

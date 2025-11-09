@@ -25,10 +25,8 @@ create or replace function get_recommendations()
 returns json as $$
 begin
 	return (
-		select *
+		select json_agg(row_to_json(f))
 		from films f
 	);	
 end
 $$ language plpgsql;
-
-
