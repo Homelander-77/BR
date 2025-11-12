@@ -1,4 +1,5 @@
 import logging
+import os
 
 
 def logger_existing(func):
@@ -11,7 +12,8 @@ def logger_existing(func):
 class Log:
     def __init__(self):
         self.logs_folder = '/server/logs'
-        self.general_logger = self._create_logger("general", self.logs_folder)
+        self.general_file = os.path.join(self.logs_folder, "general.log")
+        self.general_logger = self._create_logger("general", self.general_file)
 
     @logger_existing
     def _create_logger(self, name: str, file: str) -> logging.Loger:
