@@ -5,12 +5,11 @@ from utils.password_check import check
 from utils.salt import salt_password, generate_salt
 from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create
-from database import Database
+from database_manager import pg
 from session_store import Redis
 
 
 def reg(request):
-    pg = Database()
     firstname, lastname = request.body["firstname"], request.body["lastname"]
     login, password = request.body["login"], request.body["password"]
     ans = check(firstname, lastname, login, password)

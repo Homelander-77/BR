@@ -5,7 +5,7 @@ from datetime import datetime
 from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create, create_expire
 from utils.salt import salt_password
-from database import Database
+from database_manager import pg
 from session_store import Redis
 
 time_sample = "%a, %d %b %Y %H:%M:%S GMT"
@@ -30,7 +30,6 @@ def check_auth(request):
 
 
 def verify_password(input_login, input_password):
-    pg = Database()
     password = pg.execute_func("get_password_by_login", input_login)
     print(input_login, input_password)
     if password:
@@ -60,6 +59,8 @@ def login(request):
         return response
     else:
         ans = json.dumps({"success": False})
-        response = HTTPResponse(http.HTTPStatus.UNAUTHORIZED, ans).make(cookie={})
+        response = HTTPResponse(
+            http.HTTPStatus.UNAUTHORIZED, ans
+            ).make(cookie={})
         print('{"success": false}')
         return response

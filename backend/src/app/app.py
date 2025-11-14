@@ -1,18 +1,18 @@
 import sys
 
 from server import Server
-from database import Database
+
 from session_store import Redis
 from config import server_conf
 from app.login import login, check_auth
 from app.registration import reg
 from app.recommendations import rec
+from database_manager import pg
 
 
 if __name__ == "__main__":
     host = server_conf['host']
     port = server_conf['port']
-    pg = Database()
     redis = Redis()
     server = Server((host, port))
     try:
