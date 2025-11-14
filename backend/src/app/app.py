@@ -2,18 +2,17 @@ import sys
 
 from server import Server
 
-from session_store import Redis
 from config import server_conf
 from app.login import login, check_auth
 from app.registration import reg
 from app.recommendations import rec
 from database_manager import pg
+from session_manager import redis
 
 
 if __name__ == "__main__":
     host = server_conf['host']
     port = server_conf['port']
-    redis = Redis()
     server = Server((host, port))
     try:
         server.add_path('/login', login)
@@ -23,4 +22,5 @@ if __name__ == "__main__":
         server.start()
     except KeyboardInterrupt:
         pg.disconnect()
+        redis.disconnect()
         sys.exit(0)

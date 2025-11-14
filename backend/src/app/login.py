@@ -6,15 +6,16 @@ from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create, create_expire
 from utils.salt import salt_password
 from database_manager import pg
-from session_store import Redis
+from session_manager import redis
 
 time_sample = "%a, %d %b %Y %H:%M:%S GMT"
 
 
 def check_auth(request):
-    redis = Redis()
     if 'Cookie' in request.headers:
-        session_id = str(dict([tuple(i.split('=')) for i in request.headers['Cookie'].split('; ')])['session_id'])
+        session_id = str(dict(
+            [tuple(i.split('=')) for i in request.headers['Cookie'].split('; ')])
+            ['session_id'])
         expire = redis.get_value(session_id, "expire")
         if expire:
             expire = datetime.strptime(expire, time_sample)
@@ -44,7 +45,6 @@ def verify_password(input_login, input_password):
 
 def login(request):
     print(request.body)
-    redis = Redis()
     in_login, in_password = request.body["login"], request.body["password"]
     user_id = verify_password(in_login, in_password)
     if user_id:

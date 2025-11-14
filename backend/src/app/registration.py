@@ -6,7 +6,7 @@ from utils.salt import salt_password, generate_salt
 from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create
 from database_manager import pg
-from session_store import Redis
+from session_manager import redis
 
 
 def reg(request):
@@ -19,7 +19,6 @@ def reg(request):
                              json.dumps(ans))
                 .make(cookie={}))
     if sum(ans.values()) == 5:
-        redis = Redis()
         salt = generate_salt()
         password = salt_password(password, salt)
         cookie = cookie_create()

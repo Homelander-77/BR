@@ -24,6 +24,10 @@ class Redis:
             port=redis_conf['port'],
             decode_responses=True)
 
+    def disconnect(self):
+        self.conn.close()
+        self.conn.connection_pool.disconnect()
+
     @lazy_start
     def set_key_value(self, data: dict) -> None:
         mapping = {k: v for k, v in data.items() if k != 'session_id'}
