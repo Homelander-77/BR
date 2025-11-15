@@ -2,6 +2,9 @@ import logging
 import os
 
 
+format_log = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+
+
 def logger_existing(func):
     def wrapper(self, *args, **kwargs):
         if kwargs["name"] in logging.Logger.manager.loggerDict:
@@ -24,13 +27,13 @@ class Log:
         file_handler = logging.handlers.RotatingFileHandler(
             file, maxBytes=5_000_000, backupCount=2)
         file_handler.setFormatter(logging.Formatter(
-            "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-                                  ))
+            format_log
+        ))
 
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(logging.Formatter(
-            "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-                                     ))
+            format_log
+         ))
 
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
