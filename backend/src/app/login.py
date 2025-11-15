@@ -34,20 +34,23 @@ def check_auth(request):
 
 
 def verify_password(input_login, input_password):
-    password = pg.execute_func("get_password_by_login", input_login)
-    print(input_login, input_password)
-    if password:
-        input_salt = pg.execute_func("get_salt_by_login", login)
-        input_hash = salt_password(input_password, input_salt)
-        return (pg.execute_func("get_user_id_by_login", input_login)
-                if input_hash == password
-                else 0)
-    else:
+    try:
+        password = pg.execute_func("get_password_by_login", input_login)
+        if not password:
+            raise ValueError
+    except ValueError:
+        sub_logger["login"].info(f"No password with login {input_login}")
         return 0
+
+    input_salt = pg.execute_func("get_salt_by_login", login)
+    input_hash = salt_password(input_password, input_salt)
+    return (pg.execute_func("get_user_id_by_login", input_login)
+            if input_hash == password
+            else 0)        
 
 
 def login(request):
-    print(request.body)
+    general_loger.info(f"Accepted connection, request body {request.body}")
     in_login, in_password = request.body["login"], request.body["password"]
     user_id = verify_password(in_login, in_password)
     if user_id:

@@ -33,12 +33,13 @@ class Log:
             format_log
         ))
 
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(logging.Formatter(
-            format_log
-         ))
+        if name == "general":
+            console_handler = logging.StreamHandler()
+            console_handler.setFormatter(logging.Formatter(
+                format_log
+            ))
+            logger.addHandler(console_handler)
 
         logger.addHandler(file_handler)
-        logger.addHandler(console_handler)
 
         return logger
