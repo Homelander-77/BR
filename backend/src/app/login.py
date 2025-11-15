@@ -7,7 +7,7 @@ from utils.cookie_create import cookie_create, create_expire
 from utils.salt import salt_password
 from database_manager import pg
 from session_manager import redis
-from logger_manager import sub_logger
+from logger_manager import sub_logger, general_loger
 
 
 time_sample = "%a, %d %b %Y %H:%M:%S GMT"

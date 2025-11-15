@@ -16,16 +16,19 @@ class Log:
     def __init__(self):
         self.logs_folder = '/server/logs'
         os.makedirs(self.logs_folder, exist_ok=True)
-        self.general_file = os.path.join(self.logs_folder, "general.log")
-        self.general_logger = self._create_logger("general", self.general_file)
+        self.general_name = "general"
+        self.general_logger = self._create_logger(
+            self.general_name, self.general_name + ".log"
+            )
 
     @logger_existing
     def _create_logger(self, name: str, file: str) -> logging.Logger:
+        path = os.path.join(self.logs_folder, file)
         logger = logging.getLogger(name)
         logger.setLevel(logging.INFO)
 
         file_handler = logging.handlers.RotatingFileHandler(
-            file, maxBytes=5_000_000, backupCount=2)
+            path, maxBytes=5_000_000, backupCount=2)
         file_handler.setFormatter(logging.Formatter(
             format_log
         ))
