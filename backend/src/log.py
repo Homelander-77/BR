@@ -42,8 +42,3 @@ class Log:
         logger.addHandler(console_handler)
 
         return logger
-
-    def get_module_logger(self, module_name: str) -> logging.Logger:
-        filename = os.path.join(self.logs_folder, f"{module_name}.log")
-        logger = self._create_logger(name=module_name, file=filename)
-        return logger
