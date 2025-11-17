@@ -3,6 +3,7 @@ import redis
 
 from lazy_start import lazy_start
 from config import redis_conf
+from app.logger_manager import main_logger, general_logger
 
 
 class Redis:
@@ -19,10 +20,20 @@ class Redis:
         self.conn = None
 
     def connect(self):
-        self.conn = redis.Redis(
-            host=redis_conf['host'],
-            port=redis_conf['port'],
-            decode_responses=True)
+        try:
+            self.conn = redis.Redis(
+                host=redis_conf['host'],
+                port=redis_conf['port'],
+                decode_responses=True)
+            if self.conn.ping():
+                main_logger["redis"].info(
+                    f"Connected to {redis_conf['host']}:{redis_conf['port']}")
+                general_logger.info("Connected to redis")
+
+        except redis.ConnectionError:
+            main_logger["redis"].error(
+                f"Connection lost {redis_conf['host']}:{redis_conf['port']}")
+            general_logger.error("Failed to connect redis")
 
     def disconnect(self):
         self.conn.close()

@@ -4,7 +4,7 @@ import sys
 
 from config import db_conf
 from lazy_start import lazy_start
-from logger_manager import general_logger, main_logger
+from app.logger_manager import general_logger, main_logger
 
 
 class Database:
@@ -44,11 +44,12 @@ class Database:
     def execute_func(self, func, *args):
         try:
             self.cur.callproc(func, args)
-        except ():
+        except psycopg2.OperationalError:
             main_logger["database"].error()
             return 0
         row = self.cur.fetchall()[0]
-        self.conn.commit()
+        if "add" in func:
+            self.conn.commit()
         if not row:
             return 0
         return row[0] if len(row) == 1 else row

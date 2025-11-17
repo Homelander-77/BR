@@ -2,10 +2,12 @@ import socket
 import select
 import http
 import signal
+import errno
 
 from config import server_conf
 from utils.HTTPResponse import HTTPResponse
 from utils.HTTPRequest import HTTPRequest
+from app.logger_manager import main_logger, general_logger
 
 
 class Server:
@@ -18,34 +20,57 @@ class Server:
     def start(self):
         signal.signal(signal.SIGINT, lambda s, f: self.request_shutdown())
 
-        self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.lsock.bind(self.server_addr)
-        self.lsock.listen(server_conf['max_con'])
-        self.sockets_list.append(self.lsock)
-        print(f"Listening on {self.server_addr}")
-
+        try:
+            self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.lsock.bind(self.server_addr)
+            self.lsock.listen(server_conf['max_con'])
+            self.sockets_list.append(self.lsock)
+            general_logger.info("Server started")
+            main_logger["server"].info(f"Listening on {self.server_addr}")
+        except OSError as exc:
+            if exc.errno == errno.EADDRINUSE:
+                main_logger["server"].error(
+                    f"Address {self.server_addr} already used: {exc}")
+            elif exc.errno == errno.EACCES:
+                main_logger["server"](
+                    f"Permission denied on {self.server_addr}: {exc}"
+                )
+            else:
+                main_logger["server"](
+                    f"Socket setup failed on {self.server_addr}: {exc}"
+                )
         while not self.stop:
             read_sockets, _, _ = select.select(self.sockets_list, [], [], 1)
             for notified_socket in read_sockets:
                 if notified_socket == self.lsock:
                     conn, addr = self.lsock.accept()
-                    print(f"Accepted new connection from \
-                           module import symbol {addr}")
+                    general_logger.logger(f"Accepted new connection {addr}")
+                    main_logger["server"].info(
+                        """Accepted new connection
+                        from module import symbol {addr}""")
+                    
                     self.sockets_list.append(conn)
                 else:
-                    self.service_connection(notified_socket)
+                    try:
+                        self.service_connection(notified_socket)
+                    except Exception as exc:
+                        main_logger["server"].error(
+                            f"""Error servicing connection
+                             {notified_socket}: {exc}""")
+                        self.stop = True
         else:
             self._close_all()
 
     def request_shutdown(self):
-        print(" Shutdown requests")
+        general_logger.info("Stutdown server")
+        main_logger["server"].info("Stutdown")
         self.stop = True
 
     def _close_all(self):
         for sock in self.sockets_list:
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
-        print("All sockets closed")
+        main_logger["server"].info("Closed all sockets")
 
     def service_connection(self, conn):
         try:
@@ -53,7 +78,7 @@ class Server:
             message = recv
 
             if not message:
-                print("Close connection, no data")
+                general_logger["server"].info("Data missing")
                 self.sockets_list.remove(conn)
                 conn.close()
                 return ''
@@ -63,7 +88,8 @@ class Server:
                 message += recv
 
         except ConnectionResetError:
-            print("Close connection because of ConnectionResetError")
+            general_logger["server"].error(
+                "Close connection because of ConnectionResetError")
             self.sockets_list.remove(conn)
             conn.close()
             return ''
@@ -76,12 +102,12 @@ class Server:
             else:
                 response = HTTPResponse(http.HTTPStatus.NOT_FOUND, '').make(cookie=False)
 
-            print(response.decode())
             while response:
                 sent = conn.send(response)
                 response = response[sent:]
 
-        print("Close connection")
+        general_logger.info("Close connection")
+        main_logger.info("Close connection")
         self.sockets_list.remove(conn)
         conn.close()
 
