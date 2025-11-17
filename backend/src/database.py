@@ -1,8 +1,10 @@
 import psycopg2
 import threading
+import sys
 
 from config import db_conf
 from lazy_start import lazy_start
+from logger_manager import general_logger, main_logger
 
 
 class Database:
@@ -20,12 +22,18 @@ class Database:
         self.cur = None
 
     def connect(self):
-        self.conn = psycopg2.connect(
-            dbname=db_conf['name'],
-            user=db_conf['user'],
-            password=db_conf['password'],
-            host=db_conf['host'],
-            port=db_conf['port'])
+        try:
+            self.conn = psycopg2.connect(
+                dbname=db_conf['name'],
+                user=db_conf['user'],
+                password=db_conf['password'],
+                host=db_conf['host'],
+                port=db_conf['port'])
+        except psycopg2.OperationalError as error:
+            general_logger.error("Error with database connection")
+            main_logger["database"].error(error)
+            sys.exit(0)
+        general_logger.info("Connect to database")
         self.cur = self.conn.cursor()
 
     def disconnect(self):
@@ -34,7 +42,11 @@ class Database:
 
     @lazy_start
     def execute_func(self, func, *args):
-        self.cur.callproc(func, args)
+        try:
+            self.cur.callproc(func, args)
+        except ():
+            main_logger["database"].error()
+            return 0
         row = self.cur.fetchall()[0]
         self.conn.commit()
         if not row:
