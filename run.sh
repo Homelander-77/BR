@@ -12,7 +12,7 @@ docker run --rm -d --name redis --network net -v redis-data:/data \
 redis:1.0 redis-server --save 60 1;
 
 docker run --rm -dit --name server --network net \
--v logs/backend:/server/logs \
+-v $(pwd)/logs/backend:/server/logs \
 -e SERVER_HOST=$SERVER_HOST \
 -e SERVER_PORT=$SERVER_PORT \
 -e DB_NAME=$POSTGRES_DB \

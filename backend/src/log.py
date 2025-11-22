@@ -10,6 +10,7 @@ def logger_existing(func):
         if kwargs["name"] in logging.Logger.manager.loggerDict:
             return logging.getLogger(kwargs["name"])
         return func(self, *args, **kwargs)
+    return wrapper
 
 
 class Log:
@@ -18,7 +19,7 @@ class Log:
         os.makedirs(self.logs_folder, exist_ok=True)
         self.general_name = "general"
         self.general_logger = self._create_logger(
-            self.general_name, self.general_name + ".log"
+            name=self.general_name, file=self.general_name + ".log"
             )
 
     @logger_existing

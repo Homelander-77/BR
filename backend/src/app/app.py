@@ -6,8 +6,8 @@ from config import server_conf
 from app.login import login, check_auth
 from app.registration import reg
 from app.recommendations import rec
-from database_manager import pg
-from session_manager import redis
+from app.database_manager import pg
+from app.session_manager import redis
 
 
 if __name__ == "__main__":

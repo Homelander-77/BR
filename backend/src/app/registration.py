@@ -5,8 +5,8 @@ from utils.password_check import check
 from utils.salt import salt_password, generate_salt
 from utils.HTTPResponse import HTTPResponse
 from utils.cookie_create import cookie_create
-from database_manager import pg
-from session_manager import redis
+from app.database_manager import pg
+from app.session_manager import redis
 
 
 def reg(request):

@@ -1,7 +1,7 @@
 import http
 
 from utils.HTTPResponse import HTTPResponse
-from database_manager import pg
+from app.database_manager import pg
 
 
 def rec(request):
