@@ -7,7 +7,7 @@ import errno
 from config import server_conf
 from utils.HTTPResponse import HTTPResponse
 from utils.HTTPRequest import HTTPRequest
-from app.logger_manager import main_logger, general_logger
+from app.logger_manager import LoggerManager as L
 
 
 class Server:
@@ -25,18 +25,18 @@ class Server:
             self.lsock.bind(self.server_addr)
             self.lsock.listen(server_conf['max_con'])
             self.sockets_list.append(self.lsock)
-            general_logger.info("Server started")
-            main_logger["server"].info(f"Listening on {self.server_addr}")
+            L.general_logger.info("Server started")
+            L.main_logger["server"].info(f"Listening on {self.server_addr}")
         except OSError as exc:
             if exc.errno == errno.EADDRINUSE:
-                main_logger["server"].error(
+                L.main_logger["server"].error(
                     f"Address {self.server_addr} already used: {exc}")
             elif exc.errno == errno.EACCES:
-                main_logger["server"](
+                L.main_logger["server"](
                     f"Permission denied on {self.server_addr}: {exc}"
                 )
             else:
-                main_logger["server"](
+                L.main_logger["server"](
                     f"Socket setup failed on {self.server_addr}: {exc}"
                 )
         while not self.stop:
@@ -44,17 +44,17 @@ class Server:
             for notified_socket in read_sockets:
                 if notified_socket == self.lsock:
                     conn, addr = self.lsock.accept()
-                    general_logger.logger(f"Accepted new connection {addr}")
-                    main_logger["server"].info(
+                    L.general_logger.logger(f"Accepted new connection {addr}")
+                    L.main_logger["server"].info(
                         """Accepted new connection
                         from module import symbol {addr}""")
-                    
+
                     self.sockets_list.append(conn)
                 else:
                     try:
                         self.service_connection(notified_socket)
                     except Exception as exc:
-                        main_logger["server"].error(
+                        L.main_logger["server"].error(
                             f"""Error servicing connection
                              {notified_socket}: {exc}""")
                         self.stop = True
@@ -62,15 +62,15 @@ class Server:
             self._close_all()
 
     def request_shutdown(self):
-        general_logger.info("Stutdown server")
-        main_logger["server"].info("Stutdown")
+        L.general_logger.info("Stutdown server")
+        L.main_logger["server"].info("Stutdown")
         self.stop = True
 
     def _close_all(self):
         for sock in self.sockets_list:
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
-        main_logger["server"].info("Closed all sockets")
+        L.main_logger["server"].info("Closed all sockets")
 
     def service_connection(self, conn):
         try:
@@ -78,7 +78,7 @@ class Server:
             message = recv
 
             if not message:
-                general_logger["server"].info("Data missing")
+                L.general_logger["server"].info("Data missing")
                 self.sockets_list.remove(conn)
                 conn.close()
                 return ''
@@ -88,7 +88,7 @@ class Server:
                 message += recv
 
         except ConnectionResetError:
-            general_logger["server"].error(
+            L.general_logger["server"].error(
                 "Close connection because of ConnectionResetError")
             self.sockets_list.remove(conn)
             conn.close()
@@ -100,14 +100,15 @@ class Server:
             if request.path in self.paths.keys():
                 response = self.paths[request.path](request)
             else:
-                response = HTTPResponse(http.HTTPStatus.NOT_FOUND, '').make(cookie=False)
+                response = HTTPResponse(
+                    http.HTTPStatus.NOT_FOUND, '').make(cookie=False)
 
             while response:
                 sent = conn.send(response)
                 response = response[sent:]
 
-        general_logger.info("Close connection")
-        main_logger.info("Close connection")
+        L.general_logger.info("Close connection")
+        L.main_logger.info("Close connection")
         self.sockets_list.remove(conn)
         conn.close()
 

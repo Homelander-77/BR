@@ -4,7 +4,7 @@ import sys
 
 from config import db_conf
 from lazy_start import lazy_start
-from app.logger_manager import general_logger, main_logger
+from app.logger_manager import LoggerManager as L
 
 
 class Database:
@@ -30,10 +30,10 @@ class Database:
                 host=db_conf['host'],
                 port=db_conf['port'])
         except psycopg2.OperationalError as error:
-            general_logger.error("Error with database connection")
-            main_logger["database"].error(error)
+            L.general_logger.error("Error with database connection")
+            L.main_logger["database"].error(error)
             sys.exit(0)
-        general_logger.info("Connect to database")
+        L.general_logger.info("Connect to database")
         self.cur = self.conn.cursor()
 
     def disconnect(self):
@@ -45,7 +45,7 @@ class Database:
         try:
             self.cur.callproc(func, args)
         except psycopg2.OperationalError:
-            main_logger["database"].error()
+            L.main_logger["database"].error()
             return 0
         row = self.cur.fetchall()[0]
         if "add" in func:
