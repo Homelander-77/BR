@@ -3,25 +3,33 @@ from log import Log
 
 def loggers(func):
     def wrapper(self, *args, **kwargs):
-        if not self.main_logger and not self.sub_loggers:
-            await self.create_loggers(self)
+        if not self.main_logger and not self.sub_logger:
+            func(self, *args, *kwargs)
     return wrapper
 
 
 class LoggerManager(Log):
-    @loggers
     def __init__(self):
         super().__init__()
+        self.general_name = "general"
         self.main_files = ["server", "session", "database"]
         self.sub_files = ["login", "recommendations", "registration"]
-        self.main_loggers = []
-        self.sub_loggers = []
+        self.general_logger = self._create_logger(
+            name=self.general_name, file=self.general_name + ".log"
+            )
+        self.main_logger = {}
+        self.sub_logger = {}
+        self.create_loggers()
 
-    async def create_loggers(self):
+    @loggers
+    def create_loggers(self):
         for file in self.main_files:
-            self.main_logger.append(
-                self._create_logger(name=file, file=file + ".log"))
+            self.main_logger[file] = self._create_logger(
+                name=file, file=file + ".log")
 
-        for file in self.sub_loggers:
-            self.sub_loggers.append(
-                self._create_logger(name=file, file=file + ".log"))
+        for file in self.sub_logger:
+            self.sub_loggers[file] = self._create_logger(
+                name=file, file=file + ".log")
+
+
+l = LoggerManager()
