@@ -1,5 +1,6 @@
 import { check } from "./cookieCheck.js";
 
+
 window.addEventListener('DOMContentLoaded', async function() {
     const ans = await check();
     if (!ans) {
@@ -16,6 +17,7 @@ window.addEventListener('DOMContentLoaded', async function() {
 
 });
 
+
 async function loadCSS(href) {
   return new Promise((resolve, reject) => {
     const link = document.createElement('link');
@@ -30,6 +32,8 @@ async function loadCSS(href) {
     document.head.appendChild(link);
   });
 }
+
+
 function renderFilms() {
     fetch('/api/rec', {
 	method: 'POST',
@@ -37,7 +41,7 @@ function renderFilms() {
 	    'Content-Type': 'application/json'
 	}
     })
-    .then(res => res.json())
+    .then(res => JSON.parse(res.text())
     .then(films => {
 	const container = document.getElementById('films-container');
 	container.innerHTML = '';
@@ -45,19 +49,18 @@ function renderFilms() {
 	    const card = document.createElement('div');
 	    card.className = 'film-card';
 	    card.innerHTML = `
-            <img class="film-poster" src="${film.f_path}" alt="${film.f_name}">
+            <img class="film-poster" src="${film.image_path}" alt="${film.title}">
             <div class="film-info">
-                <div class="film-title">${film.f_name}</div>
-                <div class="film-desc">${film.f_view}</div>
+                <div class="film-title">${film.title}</div>
+                <div class="film-desc">${film.description}</div>
                 <div class="film-meta">
-                    <span>${film.f_graduation}</span>
-                    <span>⭐ ${film.f_r}</span>
+                    <span>${film.release}</span>
+                    <span>⭐ ${film.rating}</span>
                 </div>
             </div>
         `;
 	    container.appendChild(card);
 	});
     })
-	.catch(err => console.error('Error loading films:', err));;
+	.catch(err => console.error('Error loading films:', err));
 }
-
