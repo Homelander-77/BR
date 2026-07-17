@@ -2,7 +2,7 @@ import psycopg2
 import threading
 
 from config import db_conf
-from lazy_start import lazy_start
+from db.lazy_start import lazy_start
 
 
 class Database:
