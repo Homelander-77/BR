@@ -1,7 +1,7 @@
 import http
 
 from utils.HTTPResponse import HTTPResponse
-from postgres import Database
+from db.postgres import Database
 
 
 def rec(request):

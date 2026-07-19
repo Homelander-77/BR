@@ -1,11 +1,11 @@
 import sys
 
 from server import Server
-from postgres import Database
+from db.postgres import Database
 from config import server_conf
-from app.login import login, check_auth
-from app.registration import reg
-from app.recommendations import rec
+from routes.login import login, check_auth
+from routes.registration import reg
+from routes.recommendations import rec
 
 
 if __name__ == "__main__":
