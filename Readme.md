@@ -30,28 +30,26 @@ services/             # Services for docker containers
 
 ## Prerequisites
 
-Docker (без docker-compose, простые команды):
+Docker (without docker-compose, with needable commands):
 
 ```
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-Проверка установки:
+Check installation of docker:
 
 ```
 sudo docker run hello-world
 ```
 
-Добавь себя в группу docker, чтобы не писать `sudo` перед *.sh:
-https://docker-curriculum.com/
 
-Certbot (нужен для HTTPS-сертификатов):
+Certbot (needs for HTTPS-certs):
 
 ```
 sudo snap install --classic certbot
 ```
 
-Если стоит старая версия — снеси и поставь заново:
+If you have old version of certbot, reinstall it:
 
 ```
 sudo apt-get remove certbot
@@ -60,7 +58,7 @@ sudo snap install --classic certbot
 
 ## Configuration
 
-Скопируй `.env.example` в `.env` (или создай `.env` в корне) и заполни:
+Copy `.env.example` в `.env` (or create `.env` at the root) and fill it:
 
 ```
 USER_NAME=
@@ -79,7 +77,7 @@ NGINX_HTTP_PORT=
 NGINX_HTTPS_PORT=
 ```
 
-`build.sh`/`run.sh` сами подхватывают эти переменные через `source .env` — руками ничего экспортировать не нужно.
+`build.sh`/`run.sh` use the `source .env` — everything is auto..
 
 ## Build & Run
 
@@ -88,19 +86,19 @@ sh build.sh
 sh run.sh
 ```
 
-`build.sh` выпускает сертификаты через certbot (кладёт в `./services/nginx/cert/`), собирает docker-образы (postgres, redis, nginx, server) и создаёт сеть `net`.
-`run.sh` поднимает все контейнеры в этой сети.
+`build.sh` create certificate through the certbot (put in `./services/nginx/cert/`), make docker images (postgres, redis, nginx, server) and create local network `net`.
+`run.sh` start all the docker containers.
 
-Схема базы (`services/postgres/database.sql`, `films.sql`) накатывается автоматически при первом старте postgres-контейнера.
+Scheme of database (`services/postgres/database.sql`, `films.sql`) auto make up when docker container starts - postgres-container.
 
 ## API
 
-| Route         | Назначение                    |
+| Route         | Function                       |
 |---------------|--------------------------------|
-| `/login`      | вход, выдача cookie-сессии    |
-| `/reg`        | регистрация                   |
-| `/check_auth` | проверка валидности cookie    |
-| `/rec`        | список рекомендаций фильмов   |
+| `/login`      | enter, cookie session key      |
+| `/reg`        | registration                   |
+| `/check_auth` | validate check of cookie       |
+| `/rec`        | films recommendations          |
 
 ## Copyright
 
