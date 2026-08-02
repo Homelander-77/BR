@@ -2,7 +2,7 @@ import threading
 import redis
 import uuid
 
-from lazy_start import lazy_start
+from db.lazy_start import lazy_start
 from config import redis_conf
 
 

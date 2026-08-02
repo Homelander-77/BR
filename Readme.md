@@ -1,68 +1,107 @@
 # BladeRunner 2049
 
-Films shop, about buying access for watching film 
+Films shop — sells access to watch films.
 
-## Programminng languages
+## Stack
 
-- python
-- typescript
+- Backend: Python 3.10, raw sockets (no framework), OOP
+- Frontend: vanilla JS/HTML/CSS
+- Postgres — main storage
+- Redis — sessions/cookies
+- Nginx — reverse proxy + static files (js/html) + TLS
 
-## Backing services
-
-- nginx
-- postgres
-
-## Install
-
-My project was built due to docker so lots of modules not necessary to use. I use simple version of docker, not docker-compose. To install it, do:		
+## Project structure
 
 ```
- sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+backend/
+  src/
+    app.py          # entry point
+    server.py        # socket-based HTTP server
+    config.py
+    routes/           # HTTP handlers: login, registration, recommendations
+    db/               # Postgres/Redis clients
+    utils/            # HTTP request/response, cookies, password hashing
+frontend/             # static pages: index, login, reg
+services/             # Services for docker containers
+  nginx/
+  postgres/
+  redis/
 ```
 
-Test your installation:
+## Prerequisites
+
+Docker (без docker-compose, простые команды):
+
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Проверка установки:
 
 ```
 sudo docker run hello-world
 ```
-Don't forget make for docker special user, all comands in *.sh start without sudo. 
-For more information: info(https://docker-curriculum.com/)
 
-Export ```PSQL_PASSWORD``` on your host, enter the password.
-Config of psql have user and database named ```a1337```.
-Host of postgres is 0.0.0.0 and port - 5432. (Look backend/psql_config.py)
+Добавь себя в группу docker, чтобы не писать `sudo` перед *.sh:
+https://docker-curriculum.com/
 
-Also you need to repair ```build.sh``` file, indicate your data in the last str.
-
-Nginx for working with https requires certificates (domain name, expire and so on), certbot help to determine this problem:
+Certbot (нужен для HTTPS-сертификатов):
 
 ```
 sudo snap install --classic certbot
 ```
 
-If you have had old versions of certbot, reinstall it:
+Если стоит старая версия — снеси и поставь заново:
 
 ```
 sudo apt-get remove certbot
 sudo snap install --classic certbot
 ```
-All files will recive in ./services/nginx/cert/
 
-## Run
+## Configuration
 
-Start the server in docker container, you just need to type some commands shown below:
+Скопируй `.env.example` в `.env` (или создай `.env` в корне) и заполни:
+
+```
+USER_NAME=
+USER_EMAIL=
+DOMAIN_NAME=
+SERVER_HOST=
+SERVER_PORT=
+POSTGRES_USER=
+POSTGRES_DB=
+POSTGRES_HOST=
+POSTGRES_PORT=
+POSTGRES_PASSWORD=
+REDIS_HOST=
+REDIS_PORT=
+NGINX_HTTP_PORT=
+NGINX_HTTPS_PORT=
+```
+
+`build.sh`/`run.sh` сами подхватывают эти переменные через `source .env` — руками ничего экспортировать не нужно.
+
+## Build & Run
 
 ```
 sh build.sh
-sh run.sh 
+sh run.sh
 ```
 
-### Server
-For backend you need python 3.10. Main libr for server is socket. Most of modules was writed with OOP.
+`build.sh` выпускает сертификаты через certbot (кладёт в `./services/nginx/cert/`), собирает docker-образы (postgres, redis, nginx, server) и создаёт сеть `net`.
+`run.sh` поднимает все контейнеры в этой сети.
 
-### Services
-Services contain nginx and postgres, nginx take js and html files to give them to client
+Схема базы (`services/postgres/database.sql`, `films.sql`) накатывается автоматически при первом старте postgres-контейнера.
 
-## Copywright
+## API
+
+| Route         | Назначение                    |
+|---------------|--------------------------------|
+| `/login`      | вход, выдача cookie-сессии    |
+| `/reg`        | регистрация                   |
+| `/check_auth` | проверка валидности cookie    |
+| `/rec`        | список рекомендаций фильмов   |
+
+## Copyright
 
 2025 MoJlHu9l
