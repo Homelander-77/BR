@@ -1,4 +1,5 @@
 import { check } from "./checkAuth.js";
+import { apiFetch } from "./api.js";
 
 window.addEventListener('load', function() {
     check().then(ans => {
@@ -137,34 +138,30 @@ function showNotification(message) {
 function reg() {    
     const [password, firstName, lastName, email] = getData();
     if (len(password) && specialSymbolsDigestsLetters(password) && coincidence(password, firstName, lastName, email)){
-        fetch('/api/reg', {
-	method: 'POST',
-	headers: {
-	    'Content-Type': 'application/json'
-	},
-	body: JSON.stringify({firstname: firstName,
-			      lastname: lastName,
-			      login: email, 
-			      password: password})
-    })
-	    .then(res => {
-		if (res.status === 200){
-		    window.location.href = '/';
-		} else if (res.status === 409) {
-		  showNotification("User already exists");  
-		} else if (res.status === 400) {
-		    edit_common();		    
-		} else {
-		    alert("Unexpected server response.");
-                    throw new Error('Unexpected status: ' + res.status);
-		}
-	    })
-	    .catch(error => {
-		console.error('Fetch error:', error);
-		alert("Network error or bad response");
-	    });
+	try {
+	    apiFetch('/reg',
+		     {method: 'POST', body: {
+			 firstname: firstName,
+			 lastname: lastName,
+			 login: email, 
+			 password: password
+		     }});
+	    
+	    if (res.status === 200){
+		window.location.href = '/';
+	    } else if (res.status === 409) {
+		showNotification("User already exists");  
+	    } else if (res.status === 400) {
+	    edit_common();		    
+	    } else {
+		alert("Unexpected server response.");
+		throw new Error('Unexpected status: ' + res.status);
+	    }
+	} catch(e) {
+	    console.log(e);
+	}
     } else {
-	
-	
+	showNotification("Check password requirements");
+        return;
     }
 }

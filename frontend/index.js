@@ -1,4 +1,5 @@
-import { check } from "./cookieCheck.js";
+import { check } from "./checkAuth.js";
+import { apiFetch } from "./api.js";
 
 window.addEventListener('DOMContentLoaded', async function() {
     const ans = await check();
@@ -30,18 +31,15 @@ async function loadCSS(href) {
     document.head.appendChild(link);
   });
 }
-function renderFilms() {
-    fetch('/api/rec', {
-	method: 'POST',
-	headers: {
-	    'Content-Type': 'application/json'
-	}
-    })
-    .then(res => res.json())
-    .then(films => {
+async function renderFilms() {
+    try {
+	const res = await apiFetch('/rec', { method: 'POST' });
+	const json = await res.json();
+	
+	
 	const container = document.getElementById('films-container');
 	container.innerHTML = '';
-	films.forEach(film => {
+	json.forEach(film => {
 	    const card = document.createElement('div');
 	    card.className = 'film-card';
 	    card.innerHTML = `
@@ -57,7 +55,8 @@ function renderFilms() {
         `;
 	    container.appendChild(card);
 	});
-    })
-	.catch(err => console.error('Error loading films:', err));;
+    } catch(err) {
+	console.error('Error loading films:', err);
+    }
 }
 

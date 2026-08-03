@@ -1,4 +1,5 @@
 import { check } from "./checkAuth.js";
+import { apiFetch } from "./api.js";fc
 
 window.addEventListener('load', async function(){
     check().then(ans => {
@@ -18,28 +19,21 @@ function deleteCookie() {
 
 export async function loginUser() {
     document.getElementById('button').addEventListener('click', async (e) => {
-	fetch('/api/login', {
+	const res = apiFetch('/login', {
 	    method: 'POST',
-	    headers: {
-		'Content-Type': 'application/json'
-	    },
-	    body: JSON.stringify({login: document.getElementById('userLogin').value, 
-			      password: document.getElementById('password').value})
-	})
-	    .then(res => {
-		console.log(res.status);
-		if(res.status === 404){
-		    return '404';
-		} 
-		return res.json();
-	    })
-	    .then((json) => {
-		console.log(json.success);
-		if (!json.success){
-		    document.getElementById('error').style.display = 'block';
-		} else {
-		    window.location.href = '/';
-		}
-	    });
-});
+	    body: { login: document.getElementById('userLogin').value,
+		    password: document.getElementById('password').value }
+	});
+
+	if(res.status === 404){
+	    document.getElementById('error').style.display = 'block';
+	    return;
+	} 
+	const json = await res.json();
+	if (!json.success){
+	    document.getElementById('error').style.display = 'block';
+	} else {
+	    window.location.href = '/';
+	}	
+    });
 };
