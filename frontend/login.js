@@ -1,5 +1,5 @@
 import { check } from "./checkAuth.js";
-import { apiFetch } from "./api.js";fc
+import { apiFetch } from "./api.js";
 
 window.addEventListener('load', async function(){
     check().then(ans => {
@@ -19,7 +19,7 @@ function deleteCookie() {
 
 export async function loginUser() {
     document.getElementById('button').addEventListener('click', async (e) => {
-	const res = apiFetch('/login', {
+	const res = await apiFetch('/login', {
 	    method: 'POST',
 	    body: { login: document.getElementById('userLogin').value,
 		    password: document.getElementById('password').value }

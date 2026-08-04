@@ -135,11 +135,11 @@ function showNotification(message) {
 }
 
 
-function reg() {    
+async function reg() {    
     const [password, firstName, lastName, email] = getData();
     if (len(password) && specialSymbolsDigestsLetters(password) && coincidence(password, firstName, lastName, email)){
 	try {
-	    apiFetch('/reg',
+	    const res = await apiFetch('/reg',
 		     {method: 'POST', body: {
 			 firstname: firstName,
 			 lastname: lastName,
